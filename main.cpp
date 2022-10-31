@@ -17,6 +17,8 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#include "Input.h"
+
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
@@ -214,7 +216,8 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-
+    //ポインタ
+    Input* input = nullptr;
 #pragma region WindowsAPI初期化処理
     // ウィンドウサイズ
     const int window_width = 1280;  // 横幅
@@ -468,22 +471,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     // DirectX初期化処理　ここまで
 #pragma endregion
 
-    // DirectInputの初期化
-    ComPtr<IDirectInput8> directInput;
-    result = DirectInput8Create(
-        w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-    assert(SUCCEEDED(result));
+   
+    input = new Input();
+    input->Initialize(w.hInstance,hwnd);
+    
 
-    // キーボードデバイスの生成
-    ComPtr<IDirectInputDevice8> keyboard;
-    result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-    // 入力データ形式のセット
-    result = keyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
-    assert(SUCCEEDED(result));
-    // 排他制御レベルのセット
-    result = keyboard->SetCooperativeLevel(
-        hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-    assert(SUCCEEDED(result));
+    //// DirectInputの初期化
+    //ComPtr<IDirectInput8> directInput;
+    //result = DirectInput8Create(
+    //    w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+    //assert(SUCCEEDED(result));
+
+    //// キーボードデバイスの生成
+    //ComPtr<IDirectInputDevice8> keyboard;
+    //result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+    //// 入力データ形式のセット
+    //result = keyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
+    //assert(SUCCEEDED(result));
+    //// 排他制御レベルのセット
+    //result = keyboard->SetCooperativeLevel(
+    //    hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+    //assert(SUCCEEDED(result));
 
 #pragma region 描画初期化処理
 
@@ -957,6 +965,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     BYTE key[256] = {};
 
     // ゲームループ
+#pragma region ゲームループ
     while (true) {
         // メッセージがある？
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -1071,7 +1080,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         // 定数バッファビュー(CBV)の設定コマンド
         commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
         // SRVヒープの設定コマンド
-        ID3D12DescriptorHeap* descHeaps[] = {srvHeap.Get()};
+        ID3D12DescriptorHeap* descHeaps[] = { srvHeap.Get() };
         commandList->SetDescriptorHeaps(1, descHeaps);
         // SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
         D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
@@ -1123,9 +1132,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         // DirectX毎フレーム処理　ここまで
 
     }
+#pragma endregion
+    
 
     // ウィンドウクラスを登録解除
     UnregisterClass(w.lpszClassName, w.hInstance);
-
+    //入力開放
+    delete input;
     return 0;
 }
