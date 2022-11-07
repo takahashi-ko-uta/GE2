@@ -8,6 +8,8 @@ public:	//メンバ関数
 	void Initialize();
 	//更新
 	void Update();
+	//メッセージの処理
+	bool ProcessMessage();
 	//getter
 	HWND GetHend() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return w.hInstance; }

@@ -973,6 +973,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     // ゲームループ
 #pragma region ゲームループ
     while (true) {
+        //Windowsのメッセージ処理
+        if (winApp->ProcessMessage()) {
+            //ゲームループを抜ける
+            break;
+        }
+
         // メッセージがある？
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg); // キー入力メッセージの処理
