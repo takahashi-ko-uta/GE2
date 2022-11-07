@@ -4,6 +4,7 @@
 void WinApp::Initialize()
 {
     // ウィンドウクラスの設定
+    
     w.cbSize = sizeof(WNDCLASSEX);
     w.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
     w.lpszClassName = L"DirectXGame"; // ウィンドウクラス名
@@ -51,4 +52,10 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 void WinApp::Update()
 {
 
+}
+
+void WinApp::Finalize()
+{
+    // ウィンドウクラスを登録解除
+    UnregisterClass(w.lpszClassName, w.hInstance);
 }

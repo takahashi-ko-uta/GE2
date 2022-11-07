@@ -11,7 +11,8 @@ public:	//メンバ関数
 	//getter
 	HWND GetHend() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return w.hInstance; }
-
+	//終了
+	void Finalize();
 public:	//静的メンバ関数
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
