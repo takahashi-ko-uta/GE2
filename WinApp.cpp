@@ -40,7 +40,7 @@ void WinApp::Initialize()
 
 }
 
-LRESULT WinApp::WindoeProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     //メッセージで分岐
     switch (msg)
