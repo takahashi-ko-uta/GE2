@@ -1,8 +1,11 @@
 #include "DirectXCommon.h"
 #include <cassert>
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-//using namespace Microsoft::WRL;
+
+
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"dxgi.lib")
+
+using namespace Microsoft::WRL;
 
 void DirectXCommon::Initialize(WinApp* winApp)
 {
@@ -126,7 +129,7 @@ void DirectXCommon::InitializeDevice()
     
 #ifdef _DEBUG
     //デバッグレイヤーをオンに
-    Microsoft::WRL::ComPtr<ID3D12Debug1> debugController;
+    ComPtr<ID3D12Debug1> debugController;
     if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
     {
         debugController->EnableDebugLayer();
@@ -139,9 +142,9 @@ void DirectXCommon::InitializeDevice()
     assert(SUCCEEDED(result));
 
     // アダプターの列挙用
-    std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter4>> adapters;
+    std::vector<ComPtr<IDXGIAdapter4>> adapters;
     // ここに特定の名前を持つアダプターオブジェクトが入る
-    Microsoft::WRL::ComPtr<IDXGIAdapter4> tmpAdapter;
+    ComPtr<IDXGIAdapter4> tmpAdapter;
 
     // パフォーマンスが高いものから順に、全てのアダプターを列挙する
     for (UINT i = 0;
@@ -186,7 +189,7 @@ void DirectXCommon::InitializeDevice()
     }
 
 #ifdef _DEBUG
-    Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
+    ComPtr<ID3D12InfoQueue> infoQueue;
     if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
         // 抑制するエラー
         D3D12_MESSAGE_ID denyIds[] = {
@@ -308,7 +311,7 @@ void DirectXCommon::InitializeDepthBuffer()
     depthClearValue.DepthStencil.Depth = 1.0f; // 深度値1.0f（最大値）でクリア
     depthClearValue.Format = DXGI_FORMAT_D32_FLOAT; // 深度値フォーマット
     // リソース生成
-    Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff;
+    ComPtr<ID3D12Resource> depthBuff;
     result = device->CreateCommittedResource(
         &depthHeapProp,
         D3D12_HEAP_FLAG_NONE,
