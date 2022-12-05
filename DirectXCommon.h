@@ -19,6 +19,15 @@ public:// メンバ関数
 	void InitializeDepthBuffer();
 	void InitializeFence();
 
+	//描画処理
+	void PreDraw();
+	//描画処理後
+	void PostDraw();
+
+	//デバイス取得
+	ID3D12Device* GetDevice() const { return device.Get(); }
+	//コマンドリスト取得
+	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
 private:
 	//DirectX12デバイス
 	Microsoft::WRL::ComPtr<ID3D12Device> device;
@@ -35,8 +44,13 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
 	//ヒープ
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap;
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap;
 	//Backバッファ
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers;
+	//フェンス
+	Microsoft::WRL::ComPtr<ID3D12Fence> fence;
+	UINT64 fenceVal = 0;
 	//WindowsAPI
 	WinApp* winApp_ = nullptr;
 
