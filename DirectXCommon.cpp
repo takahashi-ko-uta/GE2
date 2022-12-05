@@ -58,8 +58,8 @@ void DirectXCommon::PreDraw()
     // ４．描画コマンドここから
     // ビューポート設定コマンド
     D3D12_VIEWPORT viewport{};
-    viewport.Width = WinApp::window_width;
-    viewport.Height = WinApp::window_height;
+    viewport.Width = winApp_->window_width;
+    viewport.Height = winApp_->window_height;
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
     viewport.MinDepth = 0.0f;
@@ -69,10 +69,10 @@ void DirectXCommon::PreDraw()
 
     // シザー矩形
     D3D12_RECT scissorRect{};
-    scissorRect.left = 0;                                       // 切り抜き座標左
-    scissorRect.right = scissorRect.left + WinApp::window_width;        // 切り抜き座標右
-    scissorRect.top = 0;                                        // 切り抜き座標上
-    scissorRect.bottom = scissorRect.top + WinApp::window_height;       // 切り抜き座標下
+    scissorRect.left = 0;                                           // 切り抜き座標左
+    scissorRect.right = scissorRect.left + winApp_->window_width;   // 切り抜き座標右
+    scissorRect.top = 0;                                            // 切り抜き座標上
+    scissorRect.bottom = scissorRect.top + winApp_->window_height;  // 切り抜き座標下
     // シザー矩形設定コマンドを、コマンドリストに積む
     commandList->RSSetScissorRects(1, &scissorRect);
 }

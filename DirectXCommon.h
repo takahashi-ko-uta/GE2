@@ -12,12 +12,7 @@ class DirectXCommon
 public:// メンバ関数
 	//初期化
 	void Initialize(WinApp* winApp);
-	void InitializeDevice();
-	void InitializeCommand();
-	void InitializeSwapchain();
-	void InitializeRenderTargetView();
-	void InitializeDepthBuffer();
-	void InitializeFence();
+	
 
 	//描画処理
 	void PreDraw();
@@ -28,6 +23,15 @@ public:// メンバ関数
 	ID3D12Device* GetDevice() const { return device.Get(); }
 	//コマンドリスト取得
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
+private:
+
+	void InitializeDevice();
+	void InitializeCommand();
+	void InitializeSwapchain();
+	void InitializeRenderTargetView();
+	void InitializeDepthBuffer();
+	void InitializeFence();
+
 private:
 	//DirectX12デバイス
 	Microsoft::WRL::ComPtr<ID3D12Device> device;
