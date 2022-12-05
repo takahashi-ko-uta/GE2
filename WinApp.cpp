@@ -1,6 +1,8 @@
 #include "WinApp.h"
 #include <Windows.h>
 
+#pragma comment(lib,"winmm.lib")
+
 void WinApp::Initialize()
 {
     // ウィンドウクラスの設定
@@ -33,6 +35,9 @@ void WinApp::Initialize()
 
     // ウィンドウを表示状態にする
     ShowWindow(hwnd, SW_SHOW);
+
+    //システムタイマーの分解能を上げる
+    timeBeginPeriod(1);
 
 }
 
