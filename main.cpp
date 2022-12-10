@@ -1,24 +1,8 @@
-﻿#include <cassert>
-#include <string>
-#include <DirectXMath.h>
-#include <DirectXTex.h>
-#include <d3dcompiler.h>
-#define DIRECTINPUT_VERSION     0x0800   // DirectInputのバージョン指定
-
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "dinput8.lib")
-#pragma comment(lib, "dxguid.lib")
-
-#include "Input.h"
+﻿#include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
 #include "Sprite.h"
 #include "SpriteCommon.h"
-
-using namespace DirectX;
-using namespace Microsoft::WRL;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
