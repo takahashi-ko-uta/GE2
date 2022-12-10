@@ -14,6 +14,8 @@
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
+#include "Sprite.h"
+#include "SpriteCommon.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -40,9 +42,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     Input* input = nullptr;
     input = new Input();
     input->Initialize(winApp);
+
+    //スプライト共通部の初期化
+    SpriteCommon* spriteCommon = nullptr;
+    spriteCommon = new SpriteCommon;
+    spriteCommon->Initialize(dxCommon);
+
 #pragma endregion 基盤システム初期化
       
 #pragma region 最初のシーンの初期化
+
+    Sprite* sprite = new Sprite();
+    sprite->Initialize(spriteCommon);
 
 #pragma endregion 最初のシーンの初期化
     
@@ -71,6 +82,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
   
 #pragma region 最初のシーンの描画
 
+        spriteCommon->PreDraw();
+        sprite->Draw();
+
 #pragma endregion 最初のシーンの描画
 
         //描画後処理
@@ -88,6 +102,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     winApp->Finalize();
     //WindowsAPI解放
     delete winApp;
+    //スプライト共通部の解放
+    delete spriteCommon;
+    delete sprite;
 #pragma endregion 基盤システムの終了
 
     return 0;
