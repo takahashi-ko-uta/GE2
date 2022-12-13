@@ -5,6 +5,11 @@
 
 #include "DirectXCommon.h"
 
+//定数バッファ用データ構造体
+struct ConstBufferDataMaterial{
+	
+};
+
 //スプライト共通部
 class SpriteCommon
 {
@@ -20,9 +25,12 @@ public: //メンバ関数
 private://メンバ変数
 	DirectXCommon* dxCommon;
 
-	//パイプラインステート
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
-	//ルートシグネチャ
+
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
+
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
 };
 
