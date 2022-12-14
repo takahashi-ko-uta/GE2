@@ -129,8 +129,6 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 		XMMATRIX matWorld;
 		matWorld = XMMatrixIdentity();
 
-		//rotationZ = 0.0f;
-
 		//‰ñ“]
 		XMMATRIX matRot;
 		matRot = XMMatrixIdentity();
