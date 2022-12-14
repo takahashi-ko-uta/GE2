@@ -38,6 +38,7 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//頂点バッファの生成
+
 	result = spriteCommon_->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
 		&heapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -128,6 +129,8 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 		XMMATRIX matWorld;
 		matWorld = XMMatrixIdentity();
 
+		//rotationZ = 0.0f;
+
 		//回転
 		XMMATRIX matRot;
 		matRot = XMMatrixIdentity();
@@ -190,6 +193,9 @@ void Sprite::Update()
 	XMMATRIX matWorld;
 	matWorld = XMMatrixIdentity();
 
+	//rotationZ = 0.0f;
+
+
 	//回転
 	XMMATRIX matRot;
 	matRot = XMMatrixIdentity();
@@ -217,6 +223,9 @@ void Sprite::Draw()
 	{
 		return;
 	}
+
+	//テクスチャコマンド
+	spriteCommon_->SetTextureCommands(textureIndex_);
 
 	//頂点バッファビューの設定コマンド
 	spriteCommon_->GetDirectXCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);

@@ -3,22 +3,24 @@
 #include<d3dcompiler.h>
 #include <cassert>
 #include <string>
+#include <d3dx12.h>
 #include<DirectXTex.h>
+
+
 
 #pragma comment(lib,"d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-void SpriteCommon::Initialize(DirectXCommon* _dxCommon)
+std::string SpriteCommon::kDefaultTextureDirectoryPath = "Resources/";
+
+void SpriteCommon::Initialize(DirectXCommon* dxCommon)
 {
 	HRESULT result{};
 
-	assert(_dxCommon);
-	dxCommon = _dxCommon;
-
-	
-	
+	assert(dxCommon);
+	dxCommon_ = dxCommon;
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
@@ -28,10 +30,10 @@ void SpriteCommon::Initialize(DirectXCommon* _dxCommon)
 
 	//設定をもとにSRV用デスクリプターヒープを生成
 
-	result = dxCommon->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	result = dxCommon_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result));
 
-	
+
 
 
 	ComPtr<ID3DBlob> vsBlob;//頂点シェーダオブジェクト
@@ -175,43 +177,36 @@ void SpriteCommon::Initialize(DirectXCommon* _dxCommon)
 	ComPtr<ID3D10Blob> rootSigBlob;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = dxCommon->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
+	result = dxCommon_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
 	//パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 	//パイプラインステートの生成
 
-	result = dxCommon->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 }
 
-void SpriteCommon::PreDraw()
+void SpriteCommon::LoadTexture(uint32_t index, const std::string& fileName)
 {
-	//プリミティブ型状の設定コマンド
-	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角形リスト
-	//パイプラインステートとルートシグネチャの設定コマンド
-	dxCommon->GetCommandList()->SetPipelineState(pipelineState.Get());
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	//ディレクトリパスとファイル名を連結してフルパスを得る
+	std::string fullPath = kDefaultTextureDirectoryPath + fileName;
 
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
-	dxCommon->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-}
+	//ワイド文字列に変換した際の文字列バッファサイズ
+	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
 
-void SpriteCommon::LoadTexture(uint32_t index)
-{
-	HRESULT result;
-	//ファイル読み込み
+	//ワイド文字に変換
+	std::vector<wchar_t>wfilePath(filePathBufferSize);
+	MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
+
+	//画像イメージデータ配列
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
 	// WICテクスチャのロード
-	result = LoadFromWICFile(
-		L"Resources/texture.png",   //「Resources」フォルダの画像を指定
+	HRESULT result = LoadFromWICFile(
+		wfilePath.data(),   //「Resources」フォルダの「texture.png」
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 	assert(SUCCEEDED(result));
@@ -229,8 +224,7 @@ void SpriteCommon::LoadTexture(uint32_t index)
 	// 読み込んだディフューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
 
-	//生成
-	//テクスチャ
+	//ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
 	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
@@ -247,7 +241,8 @@ void SpriteCommon::LoadTexture(uint32_t index)
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
-	result = dxCommon->GetDevice()->CreateCommittedResource(
+
+	result = dxCommon_->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -255,7 +250,6 @@ void SpriteCommon::LoadTexture(uint32_t index)
 		nullptr,
 		IID_PPV_ARGS(&texBuffs_[index]));
 
-	//転送
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
 		// ミップマップレベルを指定してイメージを取得
@@ -272,7 +266,7 @@ void SpriteCommon::LoadTexture(uint32_t index)
 	}
 
 	//SRVヒープの先頭ハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
+	//D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
 
 	//シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};//設定構造体
@@ -281,11 +275,47 @@ void SpriteCommon::LoadTexture(uint32_t index)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
+	UINT descriptorhandleIncrementSize = dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
 	//ハンドルのさす位置にシェーダーリソースビュー作成
-	dxCommon->GetDevice()->CreateShaderResourceView(texBuffs_[index].Get(), &srvDesc, srvHandle);
+	dxCommon_->GetDevice()->CreateShaderResourceView
+	(
+		texBuffs_[index].Get(),
+		&srvDesc,
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			srvHeap->GetCPUDescriptorHandleForHeapStart(),
+			index,
+			descriptorhandleIncrementSize)
+	);
+}
+
+void SpriteCommon::PreDraw()
+{
+	//プリミティブ型状の設定コマンド
+	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角形リスト
+	//パイプラインステートとルートシグネチャの設定コマンド
+	dxCommon_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+	dxCommon_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+}
+
+void SpriteCommon::PostDraw()
+{
+
 }
 
 void SpriteCommon::SetTextureCommands(uint32_t index)
 {
 
+	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	UINT descriptorhandleIncrementSize = dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(
+		1,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			srvHeap->GetGPUDescriptorHandleForHeapStart(),
+			index,
+			descriptorhandleIncrementSize));
 }

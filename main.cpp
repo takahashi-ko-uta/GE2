@@ -31,13 +31,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     SpriteCommon* spriteCommon = nullptr;
     spriteCommon = new SpriteCommon;
     spriteCommon->Initialize(dxCommon);
-
+    spriteCommon->LoadTexture(0, "texture.png");
+    spriteCommon->LoadTexture(1, "reimu.png");
 #pragma endregion 基盤システム初期化
       
 #pragma region 最初のシーンの初期化
 
     Sprite* sprite = nullptr;
     sprite = new Sprite();
+    sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon);
 
 #pragma endregion 最初のシーンの初期化
@@ -69,6 +71,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
         spriteCommon->PreDraw();
         sprite->Draw();
+        spriteCommon->PostDraw();
 
 #pragma endregion 最初のシーンの描画
 

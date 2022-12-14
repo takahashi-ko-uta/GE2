@@ -4,6 +4,7 @@
 #include <wrl.h>
 #include <array>
 
+#include <string>
 #include "DirectXCommon.h"
 
 //定数バッファ用データ構造体
@@ -19,14 +20,16 @@ public: //メンバ関数
 	void Initialize(DirectXCommon* _dxCommon);
 
 	//描画
+	//描画前処理
 	void PreDraw();
+	//描画後処理
+	void PostDraw();
 
 	/// <summary>
 	///テクスチャの読み込み
 	/// </summary>
 	/// <param name = "index">テクスチャ番号</param>
-	void LoadTexture(uint32_t index);
-
+	void LoadTexture(uint32_t index, const std::string& fileName);
 	/// <summary>
 	///描画用テクスチャコマンド発行
 	/// </summary>
@@ -34,9 +37,9 @@ public: //メンバ関数
 	void SetTextureCommands(uint32_t index);
 
 	//Getter
-	DirectXCommon* GetDirectXCommon() { return dxCommon; }
+	DirectXCommon* GetDirectXCommon() { return dxCommon_; }
 private://メンバ変数
-	DirectXCommon* dxCommon;
+	DirectXCommon* dxCommon_;
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 
@@ -47,6 +50,8 @@ private://メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
 	//SRVの最大個数
 	static const size_t kMaxSRVCount = 2056;
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath;
 	//テクスチャバッファ
 	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> texBuffs_;
 };
