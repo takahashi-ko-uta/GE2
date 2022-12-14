@@ -32,13 +32,15 @@ public:
 
 public: //メンバ関数
 	//初期化
-	void Initialize(SpriteCommon* _spriteCommon);
+	void Initialize(SpriteCommon* spriteCommon, uint32_t textureIndex);
 
 	//描画
 	void Draw();
 
 	//更新
 	void Update();
+
+public:
 
 	//setter
 	void SetPosition(const DirectX::XMFLOAT2& position) { position_ = position; }
@@ -62,21 +64,27 @@ public: //メンバ関数
 	const bool GetIsFlipY()const { return isFlipY_; }
 	const bool GetIsInvisible()const { return isInvisible_; }
 
+private:
+	//テクスチャサイズをイメージに合わせる
+	void AdjustTextureSize();
 
 private:
 	//スプライト情報
 	DirectX::XMFLOAT4 color_ = { 1.0f,1.0f,1.0f,1.0f };
-
-	//テクスチャ番号
-	uint32_t textureIndex_ = 0;
-
 	float rotationZ = 0.0f;
 	DirectX::XMFLOAT2 position_ = { 0.0f,0.0f };
-
 	DirectX::XMFLOAT2 size_ = { 100.0f,100.0f };
 
 	//アンカーポイント
 	DirectX::XMFLOAT2 anchorPoint_ = { 0.0f,0.0f };
+
+	//テクスチャ情報
+	//テクスチャ番号
+	uint32_t textureIndex_ = 0;
+	//テクスチャ左上座標
+	DirectX::XMFLOAT2 textureLeftTop_ = { 0.0f,0.0f };
+	//テクスチャ切り出しサイズ
+	DirectX::XMFLOAT2 textureSize_ = { 100.0f,100.0f };
 
 	//左右フリップ
 	bool isFlipX_ = false;

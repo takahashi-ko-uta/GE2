@@ -38,20 +38,21 @@ public: //メンバ関数
 
 	//Getter
 	DirectXCommon* GetDirectXCommon() { return dxCommon_; }
-private://メンバ変数
+	ID3D12Resource* GetTextureBuffer(uint32_t index)const { return texBuffs_[index].Get(); }
+private://静的メンバ変数
+	//SRVの最大個数
+	static const size_t kMaxSRVCount = 2056;
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath;
+private:
 	DirectXCommon* dxCommon_;
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-	//Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
-
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
-	//SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
-	//デフォルトテクスチャ格納ディレクトリ
-	static std::string kDefaultTextureDirectoryPath;
+	
 	//テクスチャバッファ
 	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> texBuffs_;
 };
