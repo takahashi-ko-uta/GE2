@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "SpriteCommon.h"
 #include "Object3d.h"
+#include "Model.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -45,8 +46,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     sprite = new Sprite();
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon,0);
-    Object3d* object3d = Object3d::Create();
-
+    
+    //.objからモデルデータを読み込む
+    Model* model_ground = Model::LoadFromOBJ("ground");
+    Model* model_triangle = Model::LoadFromOBJ("triangle_mat");
+    Model* model_cube = Model::LoadFromOBJ("cube");
+    //3Dオブジェクト生成
+    Object3d* object3d_1 = Object3d::Create();
+    Object3d* object3d_2 = Object3d::Create();
+    Object3d* object3d_3 = Object3d::Create();
+    //3Dオブジェクトと3Dモデルを紐づける
+    object3d_1->SetModel(model_ground);
+    object3d_2->SetModel(model_triangle);
+    object3d_3->SetModel(model_cube);
+    //各3Dオブジェクトの位置指定
+    object3d_1->SetPosition({ 0,-5, 0 });
+    object3d_2->SetPosition({ -5,0,-5 });
+    object3d_3->SetPosition({ +5,0,+5 });
 #pragma endregion 最初のシーンの初期化
     
 #pragma region ゲームループ
@@ -66,7 +82,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma region 最初のシーンの更新
 
         sprite->Update();
-        object3d->Update();
+        object3d_1->Update();
+        object3d_2->Update();
+        object3d_3->Update();
 
 #pragma endregion 最初のシーンの更新
         
@@ -80,7 +98,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         spriteCommon->PostDraw();
 
         Object3d::PreDraw(dxCommon->GetCommandList());
-        object3d->Draw();
+        object3d_1->Draw();
+        object3d_2->Draw();
+        object3d_3->Draw();
+
         Object3d::PostDraw();
 
 #pragma endregion 最初のシーンの描画
@@ -95,7 +116,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    //入力開放
+    //入力解放
     delete input;
     //DirectX解放
     delete dxCommon;
@@ -103,10 +124,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     winApp->Finalize();
     //WindowsAPI解放
     delete winApp;
-    //スプライト共通部の解放
+    //スプライト共通部解放
     delete spriteCommon;
-    //object3dの解放
-    delete object3d;
+    //3Dモデルの解放
+    delete model_ground;
+    delete model_triangle;
+    delete model_cube;
+    //3Dオブジェクト解放
+    delete object3d_1;
+    delete object3d_2;
+    delete object3d_3;
 
 #pragma endregion 基盤システムの終了
 
