@@ -23,7 +23,7 @@ void SpriteCommon::Initialize(DirectXCommon* _dxCommon)
 
 	// WICテクスチャのロード
 	result = LoadFromWICFile(
-		L"Resources/texture.png",   //「Resources」フォルダの「texture.png」
+		L"Resources/texture.png",   //「Resources」フォルダの画像を指定
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 	assert(SUCCEEDED(result));
@@ -59,7 +59,6 @@ void SpriteCommon::Initialize(DirectXCommon* _dxCommon)
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
-
 	result = dxCommon->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,

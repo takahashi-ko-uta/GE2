@@ -5,20 +5,24 @@ using namespace Microsoft::WRL;
 
 
 
-void Sprite::Initialize(SpriteCommon* _spriteCommon)
+void Sprite::Initialize(SpriteCommon* spriteCommon)
 {
 	HRESULT result{};
 
-	assert(_spriteCommon);
-	spriteCommon = _spriteCommon;
+	assert(spriteCommon);
+	spriteCommon_ = spriteCommon;
+
+	float left = (0.0f - anchorPoint_.x) * size_.x;
+	float right = (1.0f - anchorPoint_.x) * size_.x;
+	float top = (0.0f - anchorPoint_.y) * size_.y;
+	float bottom = (1.0f - anchorPoint_.y) * size_.y;
 
 	//頂点データ
-	Vertex vertices[] = {
-		{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
-		{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
-		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
-		{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
-	};
+	vertices[LB] = { {  left, bottom,0.0f},{0.0f,1.0f} };//左下
+	vertices[LT] = { {  left,    top,0.0f},{0.0f,0.0f} };//左上
+	vertices[RB] = { { right, bottom,0.0f},{1.0f,1.0f} };//右下
+	vertices[RT] = { { right,    top,0.0f},{1.0f,0.0f} };//右上
+
 	//頂点データ全体のサイズ=頂点データ一つ分のサイズ*頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
 	//頂点バッファの設定
@@ -35,7 +39,7 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//頂点バッファの生成
 
-	result = spriteCommon->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
+	result = spriteCommon_->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
 		&heapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,//リソース設定
@@ -76,7 +80,7 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 
 
 		//定数バッファの生成
-		result = spriteCommon->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
+		result = spriteCommon_->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
 			&cbHeapProp,//ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&cbResourceDesc,//リソース設定
@@ -108,7 +112,7 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 
 
 		//定数バッファの生成
-		result = spriteCommon->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
+		result = spriteCommon_->GetDirectXCommon()->GetDevice()->CreateCommittedResource(
 			&cbHeapProp,//ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&cbResourceDesc,//リソース設定
@@ -125,8 +129,7 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 		XMMATRIX matWorld;
 		matWorld = XMMatrixIdentity();
 
-		rotationZ = 0.0f;
-		position = { 0.0f,0.0f,0.0f };
+		//rotationZ = 0.0f;
 
 		//回転
 		XMMATRIX matRot;
@@ -136,9 +139,9 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 
 		//平行移動
 		XMMATRIX matTrans;
-		matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+		matTrans = XMMatrixTranslation(position_.x, position_.y, 0.0f);
 		matWorld *= matTrans;
-		
+
 		//射影変換
 		XMMATRIX matProjection = XMMatrixOrthographicOffCenterLH(
 			0.0f, WinApp::window_width,
@@ -153,14 +156,45 @@ void Sprite::Initialize(SpriteCommon* _spriteCommon)
 
 void Sprite::Update()
 {
-	constMapMaterial->color = color;
+	float left = (0.0f - anchorPoint_.x) * size_.x;
+	float right = (1.0f - anchorPoint_.x) * size_.x;
+	float top = (0.0f - anchorPoint_.y) * size_.y;
+	float bottom = (1.0f - anchorPoint_.y) * size_.y;
+
+	//左右反転
+	if (isFlipX_) {
+		left = -left;
+		right = -right;
+	}
+	//上下反転
+	if (isFlipY_) {
+		top = -top;
+		bottom = -bottom;
+	}
+
+	//頂点データ
+	vertices[LB] = { {  left, bottom,0.0f},{0.0f,1.0f} };//左下
+	vertices[LT] = { {  left,    top,0.0f},{0.0f,0.0f} };//左上
+	vertices[RB] = { { right, bottom,0.0f},{1.0f,1.0f} };//右下
+	vertices[RT] = { { right,    top,0.0f},{1.0f,0.0f} };//右上
+
+	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+	Vertex* vertMap = nullptr;
+	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result));
+	//全頂点に対して
+	for (int i = 0; i < _countof(vertices); i++) {
+		vertMap[i] = vertices[i];//座標をコピー
+	}
+
+	constMapMaterial->color = color_;
 
 	//ワールド
 	XMMATRIX matWorld;
 	matWorld = XMMatrixIdentity();
 
-	rotationZ = 0.0f;
-	position = { 0.0f,0.0f,0.0f };
+	//rotationZ = 0.0f;
+
 
 	//回転
 	XMMATRIX matRot;
@@ -170,7 +204,7 @@ void Sprite::Update()
 
 	//平行移動
 	XMMATRIX matTrans;
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+	matTrans = XMMatrixTranslation(position_.x, position_.y, 0.0f);
 	matWorld *= matTrans;
 
 	//射影変換
@@ -185,12 +219,16 @@ void Sprite::Update()
 
 void Sprite::Draw()
 {
+	if (isInvisible_)
+	{
+		return;
+	}
 
 	//頂点バッファビューの設定コマンド
-	spriteCommon->GetDirectXCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	spriteCommon_->GetDirectXCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 	//定数バッファビュー(CBV)の設定コマンド
-	spriteCommon->GetDirectXCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-	spriteCommon->GetDirectXCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+	spriteCommon_->GetDirectXCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+	spriteCommon_->GetDirectXCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 	//描画コマンド
-	spriteCommon->GetDirectXCommon()->GetCommandList()->DrawInstanced(4, 1, 0, 0);//全ての頂点を使って描画
+	spriteCommon_->GetDirectXCommon()->GetCommandList()->DrawInstanced(4, 1, 0, 0);//全ての頂点を使って描画
 }
