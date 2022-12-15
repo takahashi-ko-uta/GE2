@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     sprite = new Sprite();
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon,0);
-    
+  
     //.objからモデルデータを読み込む
     Model* model_ground = Model::LoadFromOBJ("ground");
     Model* model_triangle = Model::LoadFromOBJ("triangle_mat");

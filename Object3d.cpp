@@ -27,8 +27,6 @@ XMMATRIX Object3d::matProjection{};
 XMFLOAT3 Object3d::eye = { 0, 0, -50.0f };
 XMFLOAT3 Object3d::target = { 0, 0, 0 };
 XMFLOAT3 Object3d::up = { 0, 1, 0 };
-//Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
-//unsigned short Object3d::indices[planeCount * 3];
 
 void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
 {
@@ -44,10 +42,6 @@ void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int wind
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
-
-	// テクスチャ読み込み
-	//LoadTexture("Resources/triangle_mat/","tex1.png");
-
 
 	// モデル生成
 	CreateModel();
@@ -91,10 +85,6 @@ Object3d* Object3d::Create()
 		assert(0);
 		return nullptr;
 	}
-
-	//スケールをセット
-	//float scale_val = 10;
-	//object3d->scale = { scale_val,scale_val,scale_val };
 
 	return object3d;
 }

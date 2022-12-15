@@ -31,8 +31,6 @@ void Model::LoadFromOBJInternal(const std::string& modelname)
 	//ファイルストリーム
 	std::ifstream file;
 	//.objファイルを開く
-	//file.open("Resources/triangle_tex/triangle_tex.obj");
-	
 	const string filename = modelname + ".obj";
 	const string directoryPath = "Resources/" + modelname + "/";
 	file.open(directoryPath + filename);

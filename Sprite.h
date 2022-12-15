@@ -73,7 +73,7 @@ private:
 	DirectX::XMFLOAT4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 	float rotationZ = 0.0f;
 	DirectX::XMFLOAT2 position_ = { 0.0f,0.0f };
-	DirectX::XMFLOAT2 size_ = { 100.0f,100.0f };
+	DirectX::XMFLOAT2 size_ = { 1.0f,1.0f };
 
 	//アンカーポイント
 	DirectX::XMFLOAT2 anchorPoint_ = { 0.0f,0.0f };
@@ -84,7 +84,7 @@ private:
 	//テクスチャ左上座標
 	DirectX::XMFLOAT2 textureLeftTop_ = { 0.0f,0.0f };
 	//テクスチャ切り出しサイズ
-	DirectX::XMFLOAT2 textureSize_ = { 100.0f,100.0f };
+	DirectX::XMFLOAT2 textureSize_ = { 1.0f,1.0f };
 
 	//左右フリップ
 	bool isFlipX_ = false;
