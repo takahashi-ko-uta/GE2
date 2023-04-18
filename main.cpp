@@ -104,6 +104,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
         Object3d::PostDraw();
 
+        OutputDebugStringA("文字列リテラシを表示するよ\n");
+
+        std::string a("string型に埋め込んだ文字列を表示するよ\n");
+        OutputDebugStringA(a.c_str());
+
 #pragma endregion 最初のシーンの描画
 
         //描画後処理
