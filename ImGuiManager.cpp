@@ -34,3 +34,14 @@ void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon)
 	//標準フォントを追加する
 	io.Fonts->AddFontDefault();
 }
+
+void ImGuiManager::Finalize()
+{
+	//後始末
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
+	//デスクリプタヒープを解放
+	srvHeap_.Reset();
+}

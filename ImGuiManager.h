@@ -13,5 +13,10 @@ public://ƒƒ“ƒoŠÖ”
 	/// ‰Šú‰»
 	/// </summary>
 	void Initialize(WinApp* winApp,DirectXCommon* dxCommon);
+
+	/// <summary>
+	/// I—¹
+	/// </summary>
+	void Finalize();
 };
 

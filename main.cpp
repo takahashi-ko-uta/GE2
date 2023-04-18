@@ -137,6 +137,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     delete winApp;
     //スプライト共通部解放
     delete spriteCommon;
+    //ImGuiの終了処理
+    imGuiManager->Finalize();
     //ImGuiManagerの解放
     delete imGuiManager;
     //3Dモデルの解放
