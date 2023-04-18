@@ -81,44 +81,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
             break;
         }
 
-        //入力の更新
-        input->Update();
+      
 #pragma endregion 基盤システムの更新
 
 #pragma region 最初のシーンの更新
+        //ImGuiの受付開始
+        imGuiManager->Begin();
+        //入力の更新
+        input->Update();
 
         sprite->Update();
         object3d_1->Update();
         object3d_2->Update();
         object3d_3->Update();
 
+        //ImGuiの受付終了
+        imGuiManager->End();
 #pragma endregion 最初のシーンの更新
         
         //描画前処理
         dxCommon->PreDraw();
-  
 #pragma region 最初のシーンの描画
 
+        //スプライト描画
         spriteCommon->PreDraw();
         sprite->Draw();
         spriteCommon->PostDraw();
 
+        //オブジェクト描画
         Object3d::PreDraw(dxCommon->GetCommandList());
         object3d_1->Draw();
         object3d_2->Draw();
         object3d_3->Draw();
-
         Object3d::PostDraw();
 
-        OutputDebugStringA("文字列リテラシを表示するよ\n");
-
-        std::string a("string型に埋め込んだ文字列を表示するよ\n");
-        OutputDebugStringA(a.c_str());
-
+        imGuiManager->Draw();
 #pragma endregion 最初のシーンの描画
-
         //描画後処理
         dxCommon->PostDraw();
+        
     }
 #pragma endregion ゲームループ
 
