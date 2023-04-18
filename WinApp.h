@@ -11,7 +11,7 @@ public:	//メンバ関数
 	//メッセージの処理
 	bool ProcessMessage();
 	//getter
-	HWND GetHend() const { return hwnd; }
+	HWND GetHwnd() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return w.hInstance; }
 	//終了
 	void Finalize();

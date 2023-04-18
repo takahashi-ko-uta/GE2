@@ -18,10 +18,10 @@ public://ƒƒ“ƒoŠÖ”
 	//•`‰æŒãˆ—
 	void PostDraw();
 
+	//getter
 	ID3D12Device* GetDevice() const { return device.Get(); }
-
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
-
+	size_t GetBackBufferCount() const { return backBuffers.size(); }
 private:
 	//Še‰Šú‰»
 	void InitializeDevice();

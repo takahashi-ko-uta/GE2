@@ -5,6 +5,7 @@
 #include "SpriteCommon.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "ImGuiManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -38,6 +39,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
     //object3dの初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+    
+    //ImGuiManagerの初期化
+    ImGuiManager* imGuiManager = nullptr;
+    imGuiManager = new ImGuiManager;
+    imGuiManager->Initialize(winApp, dxCommon);
 #pragma endregion 基盤システム初期化
       
 #pragma region 最初のシーンの初期化
@@ -131,6 +137,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     delete winApp;
     //スプライト共通部解放
     delete spriteCommon;
+    //ImGuiManagerの解放
+    delete imGuiManager;
     //3Dモデルの解放
     delete model_ground;
     delete model_triangle;

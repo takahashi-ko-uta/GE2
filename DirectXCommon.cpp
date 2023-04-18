@@ -253,7 +253,7 @@ void DirectXCommon::InitializeSwapChain()
     ComPtr<IDXGISwapChain1> swapChain1;
     // スワップチェーンの生成
     result = dxgiFactory->CreateSwapChainForHwnd(
-        commandQueue.Get(), winApp->GetHend(), &swapChainDesc, nullptr, nullptr, &swapChain1);
+        commandQueue.Get(), winApp->GetHwnd(), &swapChainDesc, nullptr, nullptr, &swapChain1);
     assert(SUCCEEDED(result));
 
     // SwapChain4を得る
