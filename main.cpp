@@ -8,9 +8,10 @@
 #include "ImGuiManager.h"
 #include <imgui.h>
 #include <xaudio2.h>
+#pragma comment(lib,"xaudio2.lib")
+
 #include <fstream>
 
-#pragma comment(lib,"xaudio.lib")
 
 
 //チャンクヘッダ
@@ -67,7 +68,7 @@ SoundData SoundLoadWave(const char* filename)
     FormatChunk format = {};
     //チャンクヘッダーの確認
     file.read((char*)&format, sizeof(ChunkHeader));
-    if (strncmp(format.chunk.id, "fmt", 4) != 0) {
+    if (strncmp(format.chunk.id, "fmt", 4) != 0) {//3だと動く
         assert(0);
     }
     //チャンク本体の読み込み
@@ -182,6 +183,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
     //マスターボイスを生成
     result = xAudio2->CreateMasteringVoice(&masterVoice);
+    
 #pragma endregion 基盤システム初期化
       
 #pragma region 最初のシーンの初期化
@@ -207,7 +209,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     object3d_1->SetPosition({ 0,-5, 0 });
     object3d_2->SetPosition({ -5,0,-5 });
     object3d_3->SetPosition({ +5,0,+5 });
-
+    //サウンドの読み込み
+    SoundData soundData1 = SoundLoadWave("Resources/Alarm01.wav");
+    //サウンド再生
+    SoundPlayWave(xAudio2.Get(), soundData1);
 #pragma endregion 最初のシーンの初期化
     
 #pragma region ゲームループ
@@ -290,7 +295,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     delete object3d_1;
     delete object3d_2;
     delete object3d_3;
-
+    //XAudioの解放
+    xAudio2.Reset();
+    //音声データの解放
+    SoundUnload(&soundData1);
 #pragma endregion 基盤システムの終了
 
     return 0;
