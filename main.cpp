@@ -86,9 +86,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     object3d_3->SetPosition({ +5,0,+5 });
 
     //サウンドの読み込み
-    audio->LoadWave("Resources/Alarm01.wav");
+    audio->LoadWave("Alarm01.wav");
     //サウンド再生
-    audio->PlayWave("Resources/Alarm01.wav");
+    audio->PlayWave("Alarm01.wav");
     //SoundPlayWave(xAudio2.Get(), soundData1);
 #pragma endregion 最初のシーンの初期化
     

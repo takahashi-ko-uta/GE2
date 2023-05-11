@@ -38,7 +38,7 @@ public:
     };
 
     //初期化
-    void Initialize();
+    void Initialize(const std::string directoryPath = "Resources/");
     //データ解放
     void Finalize();
     //音声読み込み
@@ -56,5 +56,7 @@ private:
     Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
     // サウンドデータの連想配列
     std::map<std::string, SoundData> soundDatas_;
+    // サウンド格納ディレクトリ
+    std::string directoryPath_;
 };
 

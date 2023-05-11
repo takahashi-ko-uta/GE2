@@ -5,8 +5,9 @@
 #include <cassert>
 
 
-void Audio::Initialize()
+void Audio::Initialize(const std::string directoryPath)
 {
+    directoryPath_ = directoryPath;
 	HRESULT result;
 	IXAudio2MasteringVoice* masterVoice;
 
@@ -36,10 +37,14 @@ void Audio::LoadWave(std::string filename)
         //　重複読み込みなので、何もせず抜ける
         return;
     }
+
+    //ディレクトリパスとファイル名を連結させる
+    std::string fullpath = directoryPath_ + filename;
+
     //ファイル入力ストリームのインスタンス
     std::ifstream file;
     //.wavファイルをバイナリモードで開く
-    file.open(filename, std::ios_base::binary);
+    file.open(fullpath, std::ios_base::binary);
     //ファイルオープン失敗を検出する
     assert(file.is_open());
 
@@ -112,6 +117,7 @@ void Audio::Unload(SoundData* soundData)
 void Audio::PlayWave(std::string filename)
 {
     HRESULT result;
+
     std::map<std::string, SoundData>::iterator it = soundDatas_.find(filename);
     //未読込の検出
     assert(it != soundDatas_.end());
