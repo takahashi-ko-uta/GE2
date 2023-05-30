@@ -29,15 +29,11 @@ public://メンバ関数
 	void Run();
 
 protected:
-
+	//ポインタ置き場
 	WinApp* winApp = nullptr;
-
 	DirectXCommon* dxCommon = nullptr;
-
 	SpriteCommon* spriteCommon = nullptr;
-
 	Input* input = nullptr;
-
-	Audio* audio = nullptr;
+	//Audio* audio = nullptr;
 };
 

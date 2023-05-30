@@ -4,36 +4,37 @@
 void MyGame::Initialize()
 {
 #pragma region 基盤システムの初期化
-
-
     Framework::Initialize();
 
-    spriteCommon->LoadTexture(0, "texture.png");
-    spriteCommon->LoadTexture(1, "reimu.png");
-
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
-
-    //音声読み込み
-    audio->LoadWave("Alarm01.wav");
-    //音声再生
-    audio->PlayWave("Alarm01.wav");
-
 #pragma endregion 基盤システムの初期化
 
 #pragma region 最初のシーンを初期化
 
+    //サウンド初期化
+    Audio* audio = new Audio();
+    audio->Initialize();
+    //サウンド読み込み
+    audio->LoadWave("Alarm01.wav");
+    //サウンド再生
+    audio->PlayWave("Alarm01.wav");
 
+    //imGuiManager初期化
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
 
-
+    spriteCommon->LoadTexture(0, "texture.png");
+    spriteCommon->LoadTexture(1, "reimu.png");
+    //スプライト初期化
     sprite = new Sprite();
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon, 0);
 
+    //モデル読み込み
     model_1 = Model::LoadFromOBJ("ground");
     model_2 = Model::LoadFromOBJ("triangle_mat");
 
+    //オブジェクト生成
     object3d_1 = Object3d::Create();
     object3d_2 = Object3d::Create();
     object3d_3 = Object3d::Create();
@@ -63,12 +64,12 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    //スプライト共通部解放
-    delete spriteCommon;
-    //入力解放
-    delete input;
-    //DirectX解放
-    delete dxCommon;
+    ////スプライト共通部解放
+    //delete spriteCommon;
+    ////入力解放
+    //delete input;
+    ////DirectX解放
+    //delete dxCommon;
 
     delete object3d_1;
     delete object3d_2;
@@ -80,8 +81,9 @@ void MyGame::Finalize()
 
     Framework::Finalize();
     delete audio;
-    //WindowsAPI解放
-    delete winApp;
+    audio->Finalize();
+    ////WindowsAPI解放
+    //delete winApp;
 #pragma endregion 基盤システムの終了
 }
 

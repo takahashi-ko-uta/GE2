@@ -24,7 +24,7 @@ public:
 private:
 
 	ImGuiManager* imGuiManager = nullptr;
-
+	Audio* audio = nullptr;
 	Sprite* sprite = nullptr;
 
 	Model* model_1 = nullptr;
