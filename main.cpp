@@ -10,34 +10,19 @@
 #include <fstream>
 #include "Audio.h"
 #include "MyGame.h"
-
+#include "Framework.h"
 
 
 
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-    
-    MyGame game;// = nullptr;
+ 
+    Framework* game = new MyGame();
 
-    //ゲームの初期化
-    //game = new MyGame();
-    game.Initialize();
+    game->Run();
 
-    while (true) {
-        // 毎フレームの更新
-        game.Update();
-        // 終了リクエストがきたらループを抜ける
-        if (game.IsEndRequst() == true) {
-            break;
-        }
+    delete game;
 
-        // 描画
-        game.Draw();
-    }
-
-
-    // ゲームの終了
-    game.Finalize();
     return 0;
 }

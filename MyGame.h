@@ -11,35 +11,36 @@
 #include <imgui.h>
 #include <fstream>
 #include "Audio.h"
+#include "Framework.h"
 
 // ゲーム全体
-class MyGame
+class MyGame : public Framework
 {
 
 public:// メンバ関数
 	// 初期化
-	void Initialize();
+	void Initialize() override;
 
 	// 終了
-	void Finalize();
+	void Finalize() override;
 
 	// 毎フレーム更新
-	void Update();
+	void Update() override;
 
 	// 描画
-	void Draw();
+	void Draw() override;
 
 	// 終了フラグをチェック
-	bool IsEndRequst() { return endRequst_; }
+	//bool IsEndRequst() { return endRequst_; }
 
 private:// メンバ変数
 	//ポインタ置き場
-	WinApp* winApp = nullptr;
-	DirectXCommon* dxCommon = nullptr;
-	Input* input = nullptr;
-	SpriteCommon* spriteCommon = nullptr;
+	//WinApp* winApp = nullptr;
+	//DirectXCommon* dxCommon = nullptr;
+	//Input* input = nullptr;
+	//SpriteCommon* spriteCommon = nullptr;
 	Audio* audio = nullptr;
-	ImGuiManager* imGuiManager = nullptr;
+	/*ImGuiManager* imGuiManager = nullptr;*/
 	Sprite* sprite = nullptr;
 
 	// ゲーム終了フラグ
