@@ -1,49 +1,43 @@
 #pragma once
-#include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
-#include "Sprite.h"
 #include "SpriteCommon.h"
-#include "Object3d.h"
-#include "Model.h"
-#include "ImGuiManager.h"
-#include <imgui.h>
-#include <fstream>
+#include "Input.h"
 #include "Audio.h"
-#include "Framework.h"
 
 class Framework
 {
-public:// メンバ関数
-	//実行
-	void Run();
-
-	virtual ~Framework() = default;
-
+public://メンバ関数
 	//初期化
 	virtual void Initialize();
 
 	//終了
 	virtual void Finalize();
 
-	//毎フレーム処理
+	//毎フレーム更新
 	virtual void Update();
 
 	//描画
 	virtual void Draw() = 0;
 
 	//終了チェック
-	virtual bool IsEndRequst() { return endRequst_; }
+	virtual bool IsEndRequest();
 
-protected:// メンバ変数
-	//ポインタ置き場
+	virtual ~Framework() = default;
+
+	//実行
+	void Run();
+
+protected:
+
 	WinApp* winApp = nullptr;
+
 	DirectXCommon* dxCommon = nullptr;
+
 	SpriteCommon* spriteCommon = nullptr;
+
 	Input* input = nullptr;
-	ImGuiManager* imGuiManager = nullptr;
-	
-	// ゲーム終了フラグ
-	bool endRequst_ = false;
+
+	Audio* audio = nullptr;
 };
 
