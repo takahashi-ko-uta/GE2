@@ -38,9 +38,6 @@ void Framework::Initialize()
 	//入力の初期化
 	input = new Input();
 	input->Initialize(winApp);
-
-	/*audio = new Audio();
-	audio->Initialize()*/;
 }
 
 void Framework::Update()
@@ -51,17 +48,15 @@ void Framework::Update()
 
 void Framework::Finalize()
 {
-	//audio->Finalize();
-	//WindowsAPI解放
-	delete winApp;
-	winApp->Finalize();
 	//スプライト共通部解放
 	delete spriteCommon;
 	//入力解放
 	delete input;
 	//DirectX解放
 	delete dxCommon;
-
+	//WindowsAPI解放
+	delete winApp;
+	winApp->Finalize();
 }
 
 bool Framework::IsEndRequest()

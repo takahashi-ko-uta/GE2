@@ -45,7 +45,7 @@ void MyGame::Initialize()
     object3d_3->SetModel(model_2);
     //3Dオブジェクトの位置を指定
     object3d_2->SetPosition({ -5,0,-5 });
-    object3d_3->SetPosition({ +5,0,+5 });
+    object3d_3->SetPosition({ +5,0,-5 });
     //3Dオブジェクトのスケールを指定
     object3d_1->SetPosition({ 0,-50,0 });
     object3d_1->SetScale({ 10.0f,10.0f,10.0f });
@@ -64,13 +64,6 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    ////スプライト共通部解放
-    //delete spriteCommon;
-    ////入力解放
-    //delete input;
-    ////DirectX解放
-    //delete dxCommon;
-
     delete object3d_1;
     delete object3d_2;
     delete object3d_3;
@@ -78,12 +71,9 @@ void MyGame::Finalize()
     delete model_1;
     delete model_2;
 
-
-    Framework::Finalize();
     delete audio;
     audio->Finalize();
-    ////WindowsAPI解放
-    //delete winApp;
+    Framework::Finalize();
 #pragma endregion 基盤システムの終了
 }
 
