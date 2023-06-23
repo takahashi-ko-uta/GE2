@@ -39,6 +39,10 @@ public: //メンバ関数
 	//Getter
 	DirectXCommon* GetDirectXCommon() { return dxCommon_; }
 	ID3D12Resource* GetTextureBuffer(uint32_t index)const { return texBuffs_[index].Get(); }
+	
+public://静的メンバ関数
+	static SpriteCommon* GetInstance();
+
 private://静的メンバ変数
 	//SRVの最大個数
 	static const size_t kMaxSRVCount = 2056;

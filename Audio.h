@@ -51,6 +51,10 @@ public:
 
     //音声再生
     void PlayWave(std::string filename);
+
+public://静的メンバ関数
+    static Audio* GetInstance();
+
 private:
     // XAudio2のインスタンス
     Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;

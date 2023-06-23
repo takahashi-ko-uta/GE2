@@ -11,9 +11,12 @@ void MyGame::Initialize()
 
 #pragma region 最初のシーンを初期化
 
+   
+
     //サウンド初期化
     Audio* audio = new Audio();
     audio->Initialize();
+
     //サウンド読み込み
     audio->LoadWave("Alarm01.wav");
     //サウンド再生
@@ -23,6 +26,11 @@ void MyGame::Initialize()
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
 
+
+    //シーンの初期化
+    gamePlayScene = new GamePlayScene();
+    gamePlayScene->Initialize();
+
     spriteCommon->LoadTexture(0, "texture.png");
     spriteCommon->LoadTexture(1, "reimu.png");
     //スプライト初期化
@@ -31,48 +39,40 @@ void MyGame::Initialize()
     sprite->Initialize(spriteCommon, 0);
 
     //モデル読み込み
-    model_1 = Model::LoadFromOBJ("ground");
-    model_2 = Model::LoadFromOBJ("triangle_mat");
+    model_ = Model::LoadFromOBJ("triangle_mat");
 
     //オブジェクト生成
-    object3d_1 = Object3d::Create();
-    object3d_2 = Object3d::Create();
-    object3d_3 = Object3d::Create();
-
+    object3d_ = Object3d::Create();
     //3Dオブジェクトと3Dモデルをひも付け
-    object3d_1->SetModel(model_1);
-    object3d_2->SetModel(model_2);
-    object3d_3->SetModel(model_2);
+    object3d_->SetModel(model_);
     //3Dオブジェクトの位置を指定
-    object3d_2->SetPosition({ -5,0,-5 });
-    object3d_3->SetPosition({ +5,0,-5 });
+    object3d_->SetPosition({ -5,0,-5 });
     //3Dオブジェクトのスケールを指定
-    object3d_1->SetPosition({ 0,-50,0 });
-    object3d_1->SetScale({ 10.0f,10.0f,10.0f });
-    object3d_2->SetScale({ 10.0f,10.0f,10.0f });
-    object3d_3->SetScale({ 10.0f,10.0f,10.0f });
+    object3d_->SetScale({ 10.0f,10.0f,10.0f });
 #pragma endregion 最初のシーンを初期化
 }
 
 void MyGame::Finalize()
 {
 #pragma region 最初のシーンの終了
-    delete sprite;
+    /*delete sprite;*/
     imGuiManager->Finalize();
     delete imGuiManager;
 
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    delete object3d_1;
-    delete object3d_2;
-    delete object3d_3;
+    delete object3d_;
 
-    delete model_1;
-    delete model_2;
+    delete model_;
 
     delete audio;
     audio->Finalize();
+    //シーン終了処理
+    gamePlayScene->Finalize();
+    //シーンの解放
+    delete gamePlayScene;
+    //基底クラスの終了処理
     Framework::Finalize();
 #pragma endregion 基盤システムの終了
 }
@@ -87,10 +87,10 @@ void MyGame::Update()
 
 
     sprite->Update();
+    //シーンの更新
+    gamePlayScene->Update();
 
-    object3d_1->Update();
-    object3d_2->Update();
-    object3d_3->Update();
+    object3d_->Update();
 
     imGuiManager->Begin();
 
@@ -111,10 +111,10 @@ void MyGame::Draw()
     spriteCommon->PreDraw();
     sprite->Draw();
     spriteCommon->PostDraw();
+
     Object3d::PreDraw(dxCommon->GetCommandList());
-    object3d_1->Draw();
-    object3d_2->Draw();
-    object3d_3->Draw();
+    gamePlayScene->Draw();
+    object3d_->Draw();
     Object3d::PostDraw();
 
     imGuiManager->Draw();

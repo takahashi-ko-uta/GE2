@@ -15,6 +15,13 @@ using namespace DirectX;
 
 std::string SpriteCommon::kDefaultTextureDirectoryPath = "Resources/";
 
+SpriteCommon* SpriteCommon::GetInstance()
+{
+	SpriteCommon instance;
+
+	return &instance;
+}
+
 void SpriteCommon::Initialize(DirectXCommon* dxCommon)
 {
 	HRESULT result{};
