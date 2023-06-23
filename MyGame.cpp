@@ -45,8 +45,6 @@ void MyGame::Initialize()
     object3d_ = Object3d::Create();
     //3Dオブジェクトと3Dモデルをひも付け
     object3d_->SetModel(model_);
-    //3Dオブジェクトの位置を指定
-    object3d_->SetPosition({ -5,0,-5 });
     //3Dオブジェクトのスケールを指定
     object3d_->SetScale({ 10.0f,10.0f,10.0f });
 #pragma endregion 最初のシーンを初期化
