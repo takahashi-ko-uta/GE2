@@ -25,15 +25,15 @@ void MyGame::Initialize()
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon, 0);
 
-    //モデル読み込み
-    model_ = Model::LoadFromOBJ("triangle_mat");
+    ////モデル読み込み
+    //model_ = Model::LoadFromOBJ("triangle_mat");
 
-    //オブジェクト生成
-    object3d_ = Object3d::Create();
-    //3Dオブジェクトと3Dモデルをひも付け
-    object3d_->SetModel(model_);
-    //3Dオブジェクトのスケールを指定
-    object3d_->SetScale({ 10.0f,10.0f,10.0f });
+    ////オブジェクト生成
+    //object3d_ = Object3d::Create();
+    ////3Dオブジェクトと3Dモデルをひも付け
+    //object3d_->SetModel(model_);
+    ////3Dオブジェクトのスケールを指定
+    //object3d_->SetScale({ 10.0f,10.0f,10.0f });
 
     //サウンド初期化
     Audio* audio = new Audio();
@@ -55,9 +55,9 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    delete object3d_;
 
-    delete model_;
+    /*delete object3d_;
+    delete model_;*/
 
     delete audio;
     audio->Finalize();
@@ -83,7 +83,7 @@ void MyGame::Update()
     //シーンの更新
     gamePlayScene->Update();
 
-    object3d_->Update();
+    /*object3d_->Update();*/
 
     imGuiManager->Begin();
 
@@ -107,7 +107,7 @@ void MyGame::Draw()
 
     Object3d::PreDraw(dxCommon->GetCommandList());
     gamePlayScene->Draw();
-    object3d_->Draw();
+    /*object3d_->Draw();*/
     Object3d::PostDraw();
 
     imGuiManager->Draw();

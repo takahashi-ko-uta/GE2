@@ -28,7 +28,8 @@ private:
 	Audio* audio = nullptr;
 	Sprite* sprite = nullptr;
 
-	Model* model_ = nullptr;
-	//3Dオブジェクト生成
-	Object3d* object3d_ = nullptr;
+	////model1生成
+	//Model* model_ = nullptr;
+	////3Dオブジェクト生成
+	//Object3d* object3d_ = nullptr;
 };

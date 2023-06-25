@@ -21,12 +21,10 @@ private://メンバ変数
 	Audio* audio = Audio::GetInstance();
 	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 	Sprite* sprite = nullptr;
-	//model生成
-	Model* model_1 = nullptr;
-	Model* model_2 = nullptr;
+
+	//model1生成
+	Model* model_ = nullptr;
 	//3Dオブジェクト生成
-	Object3d* object3d_1 = nullptr;
-	Object3d* object3d_2 = nullptr;
-	Object3d* object3d_3 = nullptr;
+	Object3d* object3d_ = nullptr;
 };
 
