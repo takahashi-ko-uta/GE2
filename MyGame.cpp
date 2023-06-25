@@ -10,22 +10,9 @@ void MyGame::Initialize()
 #pragma endregion 基盤システムの初期化
 
 #pragma region 最初のシーンを初期化
-
-   
-
-    //サウンド初期化
-    Audio* audio = new Audio();
-    audio->Initialize();
-
-    //サウンド読み込み
-    audio->LoadWave("Alarm01.wav");
-    //サウンド再生
-    audio->PlayWave("Alarm01.wav");
-
     //imGuiManager初期化
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
-
 
     //シーンの初期化
     gamePlayScene = new GamePlayScene();
@@ -47,6 +34,14 @@ void MyGame::Initialize()
     object3d_->SetModel(model_);
     //3Dオブジェクトのスケールを指定
     object3d_->SetScale({ 10.0f,10.0f,10.0f });
+
+    //サウンド初期化
+    Audio* audio = new Audio();
+    audio->Initialize();
+    //サウンド読み込み
+    audio->LoadWave("Alarm01.wav");
+    //サウンド再生
+    audio->PlayWave("Alarm01.wav");
 #pragma endregion 最初のシーンを初期化
 }
 
