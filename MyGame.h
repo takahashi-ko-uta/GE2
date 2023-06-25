@@ -25,7 +25,8 @@ public:
 private:
 	GamePlayScene* gamePlayScene = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
-	Audio* audio = nullptr;
+
+	//Audio* audio = nullptr;
 	Sprite* sprite = nullptr;
 
 	////model1ê∂ê¨

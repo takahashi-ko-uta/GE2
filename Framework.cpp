@@ -32,6 +32,7 @@ void Framework::Initialize()
 	dxCommon->Initialize(winApp);
 
 	//スプライト共通部の初期化
+	spriteCommon = SpriteCommon::GetInstance();
 	spriteCommon = new SpriteCommon();
 	spriteCommon->Initialize(dxCommon);
 

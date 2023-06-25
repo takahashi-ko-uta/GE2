@@ -18,8 +18,8 @@ public://ƒƒ“ƒoŠÖ”
 	void Draw();
 
 private://ƒƒ“ƒo•Ï”
-	Audio* audio = Audio::GetInstance();
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+	Audio* audio = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	Sprite* sprite = nullptr;
 
 	//model1¶¬

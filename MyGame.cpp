@@ -18,30 +18,14 @@ void MyGame::Initialize()
     gamePlayScene = new GamePlayScene();
     gamePlayScene->Initialize();
 
+    //テクスチャのセット
     spriteCommon->LoadTexture(0, "texture.png");
     spriteCommon->LoadTexture(1, "reimu.png");
+
     //スプライト初期化
     sprite = new Sprite();
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon, 0);
-
-    ////モデル読み込み
-    //model_ = Model::LoadFromOBJ("triangle_mat");
-
-    ////オブジェクト生成
-    //object3d_ = Object3d::Create();
-    ////3Dオブジェクトと3Dモデルをひも付け
-    //object3d_->SetModel(model_);
-    ////3Dオブジェクトのスケールを指定
-    //object3d_->SetScale({ 10.0f,10.0f,10.0f });
-
-    //サウンド初期化
-    Audio* audio = new Audio();
-    audio->Initialize();
-    //サウンド読み込み
-    audio->LoadWave("Alarm01.wav");
-    //サウンド再生
-    audio->PlayWave("Alarm01.wav");
 #pragma endregion 最初のシーンを初期化
 }
 
@@ -55,13 +39,6 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-
-    /*delete object3d_;
-    delete model_;*/
-
-    delete audio;
-    audio->Finalize();
-    //シーン終了処理
     gamePlayScene->Finalize();
     //シーンの解放
     delete gamePlayScene;
@@ -78,12 +55,9 @@ void MyGame::Update()
 
 #pragma region 最初のシーンの更新
 
-
     sprite->Update();
     //シーンの更新
     gamePlayScene->Update();
-
-    /*object3d_->Update();*/
 
     imGuiManager->Begin();
 
@@ -107,7 +81,6 @@ void MyGame::Draw()
 
     Object3d::PreDraw(dxCommon->GetCommandList());
     gamePlayScene->Draw();
-    /*object3d_->Draw();*/
     Object3d::PostDraw();
 
     imGuiManager->Draw();
