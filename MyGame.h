@@ -27,10 +27,5 @@ private:
 	ImGuiManager* imGuiManager = nullptr;
 
 	//Audio* audio = nullptr;
-	/*Sprite* sprite = nullptr;*/
-
-	////model1生成
-	//Model* model_ = nullptr;
-	////3Dオブジェクト生成
-	//Object3d* object3d_ = nullptr;
+	Sprite* sprite = nullptr;
 };

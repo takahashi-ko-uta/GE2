@@ -2,16 +2,6 @@
 
 void GamePlayScene::Initialize()
 {
-    //テクスチャのセット
-    //spriteCommon = SpriteCommon::GetInstance();
-    //spriteCommon->LoadTexture(0, "texture.png");
-    //spriteCommon->LoadTexture(1, "reimu.png");
-
-
-    ////テクスチャのセット
-    //SpriteCommon::GetInstance()->LoadTexture(0, "texture.png");
-    //SpriteCommon::GetInstance()->LoadTexture(1, "reimu.png");
-
     //モデル読み込み
     model_ = Model::LoadFromOBJ("triangle_mat");
 

@@ -31,20 +31,6 @@ void Framework::Initialize()
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp);
 
-	//スプライト共通部の初期化
-	spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon = new SpriteCommon();
-	spriteCommon->Initialize(dxCommon);
-
-	//テクスチャのセット
-	spriteCommon->LoadTexture(0, "texture.png");
-	spriteCommon->LoadTexture(1, "reimu.png");
-
-	//スプライト初期化
-	sprite = new Sprite();
-	sprite->SetTextureIndex(0);
-	sprite->Initialize(spriteCommon, 0);
-
 	//入力の初期化
 	input = new Input();
 	input->Initialize(winApp);
@@ -52,15 +38,12 @@ void Framework::Initialize()
 
 void Framework::Update()
 {
-	sprite->Update();
 	//inputの更新処理
 	input->Update();
 }
 
 void Framework::Finalize()
 {
-	//スプライト共通部解放
-	delete spriteCommon;
 	//入力解放
 	delete input;
 	//DirectX解放

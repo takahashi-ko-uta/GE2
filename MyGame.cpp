@@ -6,10 +6,24 @@ void MyGame::Initialize()
 #pragma region 基盤システムの初期化
     Framework::Initialize();
 
+
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 #pragma endregion 基盤システムの初期化
 
 #pragma region 最初のシーンを初期化
+    //スプライト共通部の初期化
+    spriteCommon = new SpriteCommon();
+    spriteCommon->Initialize(dxCommon);
+
+    //テクスチャのセット
+    spriteCommon->LoadTexture(0, "texture.png");
+    spriteCommon->LoadTexture(1, "reimu.png");
+
+    //スプライト初期化
+    sprite = new Sprite();
+    sprite->SetTextureIndex(0);
+    sprite->Initialize(spriteCommon, 0);
+
     //imGuiManager初期化
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
@@ -23,7 +37,8 @@ void MyGame::Initialize()
 void MyGame::Finalize()
 {
 #pragma region 最初のシーンの終了
-    /*delete sprite;*/
+    delete sprite;
+    delete spriteCommon;
     imGuiManager->Finalize();
     delete imGuiManager;
 
@@ -41,24 +56,17 @@ void MyGame::Finalize()
 
 void MyGame::Update()
 {
-#pragma region 基盤システムの更新
+    // 基盤システムの更新
     Framework::Update();
-#pragma endregion 基盤システムの更新
-
-#pragma region 最初のシーンの更新
-
     
     //シーンの更新
     gamePlayScene->Update();
+    sprite->Update();
 
     imGuiManager->Begin();
 
     ImGui::ShowDemoWindow();
-
     imGuiManager->End();
-
-
-#pragma endregion 最初のシーンの更新
 }
 
 void MyGame::Draw()
