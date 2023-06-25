@@ -4,6 +4,7 @@
 #include "SpriteCommon.h"
 #include "Input.h"
 #include "Audio.h"
+#include "Sprite.h"
 
 class Framework
 {
@@ -34,6 +35,7 @@ protected:
 	DirectXCommon* dxCommon = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
 	Input* input = nullptr;
+	Sprite* sprite = nullptr;
 	//Audio* audio = nullptr;
 };
 

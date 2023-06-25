@@ -36,6 +36,15 @@ void Framework::Initialize()
 	spriteCommon = new SpriteCommon();
 	spriteCommon->Initialize(dxCommon);
 
+	//テクスチャのセット
+	spriteCommon->LoadTexture(0, "texture.png");
+	spriteCommon->LoadTexture(1, "reimu.png");
+
+	//スプライト初期化
+	sprite = new Sprite();
+	sprite->SetTextureIndex(0);
+	sprite->Initialize(spriteCommon, 0);
+
 	//入力の初期化
 	input = new Input();
 	input->Initialize(winApp);
@@ -43,6 +52,7 @@ void Framework::Initialize()
 
 void Framework::Update()
 {
+	sprite->Update();
 	//inputの更新処理
 	input->Update();
 }

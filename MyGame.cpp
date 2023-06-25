@@ -17,15 +17,6 @@ void MyGame::Initialize()
     //シーンの初期化
     gamePlayScene = new GamePlayScene();
     gamePlayScene->Initialize();
-
-    //テクスチャのセット
-    spriteCommon->LoadTexture(0, "texture.png");
-    spriteCommon->LoadTexture(1, "reimu.png");
-
-    //スプライト初期化
-    sprite = new Sprite();
-    sprite->SetTextureIndex(0);
-    sprite->Initialize(spriteCommon, 0);
 #pragma endregion 最初のシーンを初期化
 }
 
@@ -39,6 +30,7 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
+    //シーン終了処理
     gamePlayScene->Finalize();
     //シーンの解放
     delete gamePlayScene;
@@ -55,7 +47,7 @@ void MyGame::Update()
 
 #pragma region 最初のシーンの更新
 
-    sprite->Update();
+    
     //シーンの更新
     gamePlayScene->Update();
 

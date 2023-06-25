@@ -19,8 +19,6 @@ public://ƒƒ“ƒoŠÖ”
 
 private://ƒƒ“ƒo•Ï”
 	Audio* audio = nullptr;
-	SpriteCommon* spriteCommon = nullptr;
-	Sprite* sprite = nullptr;
 
 	//model1¶¬
 	Model* model_ = nullptr;
