@@ -6,7 +6,7 @@ void MyGame::Initialize()
 #pragma region 基盤システムの初期化
     Framework::Initialize();
 
-
+ 
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 #pragma endregion 基盤システムの初期化
 
