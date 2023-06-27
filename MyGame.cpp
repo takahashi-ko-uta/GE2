@@ -82,7 +82,6 @@ void MyGame::Update()
 
     imGuiManager->End();
 
-
 #pragma endregion 最初のシーンの更新
 }
 
