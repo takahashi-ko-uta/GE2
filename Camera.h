@@ -25,9 +25,9 @@ public://アクセッサ
 	//const XMMATRIX& GetMatViewProjection() { return matViewProjection_; }
 	//const XMMATRIX& GetMatBillboard() { return matBillboard_; }
 	//const XMMATRIX& GetMatBillboardY() { return matBillboardY_; }
-	//const XMFLOAT3& GetEye() { return eye_; }
-	//const XMFLOAT3& GetTarget() { return target_; }
-	//const XMFLOAT3& GetUp() { return up_; }
+	const XMFLOAT3& GetEye() { return eye; }
+	const XMFLOAT3& GetTarget() { return target; }
+	const XMFLOAT3& GetUp() { return up; }
 	////setter
 	//void SetEye(const XMFLOAT3& eye);
 	//void SetTarget(const XMFLOAT3& target);

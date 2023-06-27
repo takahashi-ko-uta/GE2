@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Model.h"
+#include "Camera.h"
 
 /// <summary>
 /// 3Dオブジェクト
@@ -22,16 +23,12 @@ private: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public: // サブクラス
-
-
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
 		//XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
 	};
-
-
 
 private: // 定数
 	static const int division = 50;					// 分割数
@@ -47,7 +44,7 @@ public: // 静的メンバ関数
 	/// <param name="device">デバイス</param>
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
-	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
+	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height,Camera* camera);
 
 	/// <summary>
 	/// 描画前処理
@@ -70,25 +67,25 @@ public: // 静的メンバ関数
 	/// 視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const XMFLOAT3& GetEye() { return eye; }
+	//static const XMFLOAT3& GetEye() { return eye; }
 
 	/// <summary>
 	/// 視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetEye(XMFLOAT3 eye);
+	//static void SetEye(XMFLOAT3 eye);
 
 	/// <summary>
 	/// 注視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const XMFLOAT3& GetTarget() { return target; }
+	//static const XMFLOAT3& GetTarget() { return target; }
 
 	/// <summary>
 	/// 注視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetTarget(XMFLOAT3 target);
+	//static void SetTarget(XMFLOAT3 target);
 
 	/// <summary>
 	/// ベクトルによる移動
@@ -107,16 +104,20 @@ private: // 静的メンバ変数
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 
-	// ビュー行列
-	static XMMATRIX matView;
-	// 射影行列
-	static XMMATRIX matProjection;
-	// 視点座標
-	static XMFLOAT3 eye;
-	// 注視点座標
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
+	//カメラ
+	static Camera* camera_;
+
+	//// ビュー行列
+	//static XMMATRIX matView;
+	//// 射影行列
+	//static XMMATRIX matProjection;
+	//// 視点座標
+	//static XMFLOAT3 eye;
+	//// 注視点座標
+	//static XMFLOAT3 target;
+	//// 上方向ベクトル
+	//static XMFLOAT3 up;
+
 
 	// 頂点データ配列
 	//static VertexPosNormalUv vertices[vertexCount];
@@ -129,10 +130,6 @@ private: // 静的メンバ変数
 		vectorはあとから要素数を増やせる(メモリを削除する仕様で作ってない
 		配列からvectorに変えた理由 : 配列だと読み込める頂点数に限りがあるのと確保したメモリが無駄になるから
 	*/
-
-
-
-
 
 private:// 静的メンバ関数
 
@@ -149,8 +146,6 @@ private:// 静的メンバ関数
 	/// </summary>
 	/// <returns>成否</returns>
 	static void InitializeGraphicsPipeline();
-
-
 
 	/// <summary>
 	/// モデル作成
@@ -186,7 +181,6 @@ public: // メンバ関数
 	/// <param name="position">座標</param>
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
 
-
 	void SetModel(Model* model) { this->model = model; }
 
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
@@ -211,4 +205,6 @@ private: // メンバ変数
 	Object3d* parent = nullptr;
 	//モデル
 	Model* model = nullptr;
+	////カメラ
+	//Camera* camera = nullptr;
 };

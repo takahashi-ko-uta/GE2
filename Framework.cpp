@@ -31,10 +31,6 @@ void Framework::Initialize()
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp);
 
-	//スプライト共通部の初期化
-	spriteCommon = new SpriteCommon();
-	spriteCommon->Initialize(dxCommon);
-
 	//入力の初期化
 	input = new Input();
 	input->Initialize(winApp);
@@ -48,8 +44,7 @@ void Framework::Update()
 
 void Framework::Finalize()
 {
-	//スプライト共通部解放
-	delete spriteCommon;
+	
 	//入力解放
 	delete input;
 	//DirectX解放

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <wrl.h>
 #include "Framework.h"
+#include "Camera.h"
 
 class MyGame : public Framework
 {
@@ -30,4 +31,5 @@ private:
 	Model* model_ = nullptr;
 	//3Dオブジェクト生成
 	Object3d* object3d_ = nullptr;
+	Camera* camera = nullptr;
 };

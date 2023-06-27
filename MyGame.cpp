@@ -6,23 +6,23 @@ void MyGame::Initialize()
 #pragma region 基盤システムの初期化
     Framework::Initialize();
 
-    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 #pragma endregion 基盤システムの初期化
 
 #pragma region 最初のシーンを初期化
 
-    //サウンド初期化
-    Audio* audio = new Audio();
-    audio->Initialize();
-    //サウンド読み込み
-    audio->LoadWave("Alarm01.wav");
-    //サウンド再生
-    audio->PlayWave("Alarm01.wav");
+    camera = new Camera();
+    camera->Initialize();
+   
+    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height,camera);
 
     //imGuiManager初期化
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
 
+    //スプライト共通部の初期化
+    spriteCommon = new SpriteCommon();
+    spriteCommon->Initialize(dxCommon);
+    //テクスチャのセット
     spriteCommon->LoadTexture(0, "texture.png");
     spriteCommon->LoadTexture(1, "reimu.png");
     //スプライト初期化
@@ -35,13 +35,21 @@ void MyGame::Initialize()
 
     //オブジェクト生成
     object3d_ = Object3d::Create();
-
     //3Dオブジェクトと3Dモデルをひも付け
     object3d_->SetModel(model_);
     //3Dオブジェクトの位置を指定
     object3d_->SetPosition({ -5,0,-5 });
     //3Dオブジェクトのスケールを指定
     object3d_->SetScale({ 10.0f,10.0f,10.0f });
+
+    //サウンド初期化
+    Audio* audio = new Audio();
+    audio->Initialize();
+    //サウンド読み込み
+    audio->LoadWave("Alarm01.wav");
+    //サウンド再生
+    audio->PlayWave("Alarm01.wav");
+
 #pragma endregion 最初のシーンを初期化
 }
 
@@ -51,7 +59,8 @@ void MyGame::Finalize()
     delete sprite;
     imGuiManager->Finalize();
     delete imGuiManager;
-
+    //スプライト共通部解放
+    delete spriteCommon;
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
@@ -77,10 +86,18 @@ void MyGame::Update()
 
 
     imGuiManager->Begin();
-
+    ////ImGuiのデモウィンドウ表示
     //ImGui::ShowDemoWindow();
+#pragma region ImGui::Text
+
+    ImGui::Text("cameraEye:%f,%f,%f", camera->GetEye().x, camera->GetEye().y, camera->GetEye().z);
+    ImGui::Text("cameraTarget:%f,%f,%f", camera->GetTarget().x, camera->GetTarget().y, camera->GetTarget().z);
+    ImGui::Text("cameraUp:%f,%f,%f", camera->GetUp().x, camera->GetUp().y, camera->GetUp().z);
+#pragma endregion ImGui::Text
 
     imGuiManager->End();
+
+
 
 #pragma endregion 最初のシーンの更新
 }
