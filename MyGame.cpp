@@ -31,26 +31,17 @@ void MyGame::Initialize()
     sprite->Initialize(spriteCommon, 0);
 
     //モデル読み込み
-    model_1 = Model::LoadFromOBJ("ground");
-    model_2 = Model::LoadFromOBJ("triangle_mat");
+    model_ = Model::LoadFromOBJ("triangle_mat");
 
     //オブジェクト生成
-    object3d_1 = Object3d::Create();
-    object3d_2 = Object3d::Create();
-    object3d_3 = Object3d::Create();
+    object3d_ = Object3d::Create();
 
     //3Dオブジェクトと3Dモデルをひも付け
-    object3d_1->SetModel(model_1);
-    object3d_2->SetModel(model_2);
-    object3d_3->SetModel(model_2);
+    object3d_->SetModel(model_);
     //3Dオブジェクトの位置を指定
-    object3d_2->SetPosition({ -5,0,-5 });
-    object3d_3->SetPosition({ +5,0,-5 });
+    object3d_->SetPosition({ -5,0,-5 });
     //3Dオブジェクトのスケールを指定
-    object3d_1->SetPosition({ 0,-50,0 });
-    object3d_1->SetScale({ 10.0f,10.0f,10.0f });
-    object3d_2->SetScale({ 10.0f,10.0f,10.0f });
-    object3d_3->SetScale({ 10.0f,10.0f,10.0f });
+    object3d_->SetScale({ 10.0f,10.0f,10.0f });
 #pragma endregion 最初のシーンを初期化
 }
 
@@ -64,12 +55,9 @@ void MyGame::Finalize()
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    delete object3d_1;
-    delete object3d_2;
-    delete object3d_3;
+    delete object3d_;
 
-    delete model_1;
-    delete model_2;
+    delete model_;
 
     delete audio;
     audio->Finalize();
@@ -84,17 +72,13 @@ void MyGame::Update()
 #pragma endregion 基盤システムの更新
 
 #pragma region 最初のシーンの更新
-
-
     sprite->Update();
+    object3d_->Update();
 
-    object3d_1->Update();
-    object3d_2->Update();
-    object3d_3->Update();
 
     imGuiManager->Begin();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     imGuiManager->End();
 
@@ -111,10 +95,8 @@ void MyGame::Draw()
     spriteCommon->PreDraw();
     sprite->Draw();
     spriteCommon->PostDraw();
-    Object3d::PreDraw(dxCommon->GetCommandList());
-    object3d_1->Draw();
-    object3d_2->Draw();
-    object3d_3->Draw();
+    Object3d::PreDraw(dxCommon->GetCommandList());  
+    object3d_->Draw();
     Object3d::PostDraw();
 
     imGuiManager->Draw();
