@@ -8,7 +8,10 @@
 #include <fstream>
 #include <wrl.h>
 #include "Framework.h"
+
 #include "GamePlayScene.h"
+
+#include "Camera.h"
 
 
 class MyGame : public Framework
@@ -24,9 +27,16 @@ public:
 	void Draw() override;
 
 private:
-	GamePlayScene* gamePlayScene = nullptr;
-	ImGuiManager* imGuiManager = nullptr;
 
-	//Audio* audio = nullptr;
+	ImGuiManager* imGui = nullptr;
+
 	Sprite* sprite = nullptr;
+
+	Model* model_ = nullptr;
+	//3Dオブジェクト生成
+	Object3d* object3d_ = nullptr;
+	//Audio* audio = nullptr;
+	Camera* camera_ = nullptr;
+
 };
+
