@@ -78,7 +78,7 @@ void MyGame::Update()
 
     imGuiManager->Begin();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     imGuiManager->End();
 
