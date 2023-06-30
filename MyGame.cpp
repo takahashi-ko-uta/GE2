@@ -81,6 +81,8 @@ void MyGame::Update()
 #pragma endregion 基盤システムの更新
 
 #pragma region 最初のシーンの更新
+    camera->SetEye({ 0,0,-100 });
+    camera->Update();
     sprite->Update();
     object3d_->Update();
 

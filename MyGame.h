@@ -8,7 +8,7 @@
 #include <fstream>
 #include <wrl.h>
 #include "Framework.h"
-#include "Camera.h"
+//#include "Camera.h"
 
 class MyGame : public Framework
 {
