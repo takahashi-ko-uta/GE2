@@ -10,14 +10,16 @@ void MyGame::Initialize()
 
 #pragma region 最初のシーンを初期化
 
-    camera = new Camera();
-    camera->Initialize();
-   
-    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height,camera);
-
     //imGuiManager初期化
     imGuiManager = new ImGuiManager();
     imGuiManager->Initialize(winApp, dxCommon);
+
+    //カメラ初期化
+    camera = new Camera();
+    camera->Initialize();
+
+    //オブジェクト全体の初期化
+    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera);
 
     //スプライト共通部の初期化
     spriteCommon = new SpriteCommon();
