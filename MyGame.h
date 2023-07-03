@@ -26,6 +26,7 @@ public:
 private:
 
 	ImGuiManager* imGuiManager = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	Sprite* sprite = nullptr;
 
 	////ƒ‚ƒfƒ‹¶¬
