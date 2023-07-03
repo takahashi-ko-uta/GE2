@@ -8,7 +8,8 @@
 #include <fstream>
 #include <wrl.h>
 #include "Framework.h"
-//#include "Camera.h"
+#include "GamePlayScene.h"
+#include "Camera.h"
 
 class MyGame : public Framework
 {
@@ -25,11 +26,16 @@ public:
 private:
 
 	ImGuiManager* imGuiManager = nullptr;
-	Audio* audio = nullptr;
 	Sprite* sprite = nullptr;
 
-	Model* model_ = nullptr;
-	//3Dオブジェクト生成
-	Object3d* object3d_ = nullptr;
+	////モデル生成
+	//Model* model_ = nullptr;
+	////3Dオブジェクト生成
+	//Object3d* object3d_ = nullptr;
+	////audio生成
+	//Audio* audio = nullptr;
+
 	Camera* camera = nullptr;
+
+	GamePlayScene* scene = nullptr;
 };

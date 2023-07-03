@@ -19,6 +19,7 @@ public://ƒƒ“ƒoŠÖ”
 	void PostDraw();
 
 	//getter
+	static DirectXCommon* GetInstance();
 	ID3D12Device* GetDevice() const { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
 	size_t GetBackBufferCount() const { return backBuffers.size(); }

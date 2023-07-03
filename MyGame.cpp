@@ -32,25 +32,29 @@ void MyGame::Initialize()
     sprite->SetTextureIndex(0);
     sprite->Initialize(spriteCommon, 0);
 
-    //モデル読み込み
-    model_ = Model::LoadFromOBJ("triangle_mat");
+    //シーンの初期か化
+    scene = new GamePlayScene();
+    scene->Initialize(dxCommon);
 
-    //オブジェクト生成
-    object3d_ = Object3d::Create();
-    //3Dオブジェクトと3Dモデルをひも付け
-    object3d_->SetModel(model_);
-    //3Dオブジェクトの位置を指定
-    object3d_->SetPosition({ -5,0,-5 });
-    //3Dオブジェクトのスケールを指定
-    object3d_->SetScale({ 10.0f,10.0f,10.0f });
+    ////モデル読み込み
+    //model_ = Model::LoadFromOBJ("triangle_mat");
 
-    //サウンド初期化
-    Audio* audio = new Audio();
-    audio->Initialize();
-    //サウンド読み込み
-    audio->LoadWave("Alarm01.wav");
-    //サウンド再生
-    audio->PlayWave("Alarm01.wav");
+    ////オブジェクト生成
+    //object3d_ = Object3d::Create();
+    ////3Dオブジェクトと3Dモデルをひも付け
+    //object3d_->SetModel(model_);
+    ////3Dオブジェクトの位置を指定
+    //object3d_->SetPosition({ -5,0,-5 });
+    ////3Dオブジェクトのスケールを指定
+    //object3d_->SetScale({ 10.0f,10.0f,10.0f });
+
+    ////サウンド初期化
+    //Audio* audio = new Audio();
+    //audio->Initialize();
+    ////サウンド読み込み
+    //audio->LoadWave("Alarm01.wav");
+    ////サウンド再生
+    //audio->PlayWave("Alarm01.wav");
 
 #pragma endregion 最初のシーンを初期化
 }
@@ -63,15 +67,18 @@ void MyGame::Finalize()
     delete imGuiManager;
     //スプライト共通部解放
     delete spriteCommon;
+
+    //シーンの終了処理
+    scene->Finalize();
+
+    /*delete object3d_;
+    delete model_;
+    delete audio;
+    audio->Finalize();*/
+
 #pragma endregion 最初のシーンの終了
 
 #pragma region 基盤システムの終了
-    delete object3d_;
-
-    delete model_;
-
-    delete audio;
-    audio->Finalize();
     Framework::Finalize();
 #pragma endregion 基盤システムの終了
 }
@@ -86,7 +93,11 @@ void MyGame::Update()
     camera->SetEye({ 0,0,-100 });
     camera->Update();
     sprite->Update();
-    object3d_->Update();
+
+    //シーンの毎フレーム処理
+    scene->Update();
+
+    //object3d_->Update();
 
 
     imGuiManager->Begin();
@@ -115,9 +126,13 @@ void MyGame::Draw()
     spriteCommon->PreDraw();
     sprite->Draw();
     spriteCommon->PostDraw();
-    Object3d::PreDraw(dxCommon->GetCommandList());  
+
+    //シーンの描画
+    scene->Draw();
+
+    /*Object3d::PreDraw(dxCommon->GetCommandList());  
     object3d_->Draw();
-    Object3d::PostDraw();
+    Object3d::PostDraw();*/
 
     imGuiManager->Draw();
 #pragma endregion 最初のシーンの描画
