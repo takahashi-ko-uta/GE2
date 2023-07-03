@@ -24,20 +24,6 @@ public:
 	void Draw() override;
 
 private:
-
 	ImGuiManager* imGuiManager = nullptr;
-
-	//SpriteCommon* spriteCommon = nullptr;
-	//Sprite* sprite = nullptr;
-
-	////モデル生成
-	//Model* model_ = nullptr;
-	////3Dオブジェクト生成
-	//Object3d* object3d_ = nullptr;
-	////audio生成
-	//Audio* audio = nullptr;
-
-	Camera* camera = nullptr;
-
 	GamePlayScene* scene = nullptr;
 };

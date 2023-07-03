@@ -33,6 +33,5 @@ protected:
 	WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
-	//Audio* audio = nullptr;
 };
 
