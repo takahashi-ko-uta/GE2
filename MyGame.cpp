@@ -21,16 +21,16 @@ void MyGame::Initialize()
     //オブジェクト全体の初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera);
 
-    //スプライト共通部の初期化
-    spriteCommon = new SpriteCommon();
-    spriteCommon->Initialize(dxCommon);
-    //テクスチャのセット
-    spriteCommon->LoadTexture(0, "texture.png");
-    spriteCommon->LoadTexture(1, "reimu.png");
-    //スプライト初期化
-    sprite = new Sprite();
-    sprite->SetTextureIndex(0);
-    sprite->Initialize(spriteCommon, 0);
+    ////スプライト共通部の初期化
+    //spriteCommon = new SpriteCommon();
+    //spriteCommon->Initialize(dxCommon);
+    ////テクスチャのセット
+    //spriteCommon->LoadTexture(0, "texture.png");
+    //spriteCommon->LoadTexture(1, "reimu.png");
+    ////スプライト初期化
+    //sprite = new Sprite();
+    //sprite->SetTextureIndex(0);
+    //sprite->Initialize(spriteCommon, 0);
 
     //シーンの初期か化
     scene = new GamePlayScene();
@@ -62,11 +62,13 @@ void MyGame::Initialize()
 void MyGame::Finalize()
 {
 #pragma region 最初のシーンの終了
-    delete sprite;
     imGuiManager->Finalize();
     delete imGuiManager;
-    //スプライト共通部解放
-    delete spriteCommon;
+
+    ////スプライト共通部解放
+    //delete spriteCommon;
+    ////スプライト解放
+    //delete sprite;
 
     //シーンの終了処理
     scene->Finalize();
@@ -92,7 +94,8 @@ void MyGame::Update()
 #pragma region 最初のシーンの更新
     camera->SetEye({ 0,0,-100 });
     camera->Update();
-    sprite->Update();
+
+    /*sprite->Update();*/
 
     //シーンの毎フレーム処理
     scene->Update();
@@ -123,9 +126,9 @@ void MyGame::Draw()
     dxCommon->PreDraw();
 
 #pragma region 最初のシーンの描画
-    spriteCommon->PreDraw();
+    /*spriteCommon->PreDraw();
     sprite->Draw();
-    spriteCommon->PostDraw();
+    spriteCommon->PostDraw();*/
 
     //シーンの描画
     scene->Draw();

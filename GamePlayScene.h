@@ -3,6 +3,8 @@
 #include "Object3d.h"
 #include "Audio.h"
 #include "DirectXCommon.h"
+#include "SpriteCommon.h"
+#include "Sprite.h"
 
 class GamePlayScene
 {
@@ -18,12 +20,15 @@ public://メンバ関数
 
 private:
 	DirectXCommon* dxCommon_ = nullptr;
-
+	//スプライト共通部の生成
+	SpriteCommon* spriteCommon_ = nullptr;
+	//スプライト生成
+	Sprite* sprite_ = nullptr;
 	//モデル生成
 	Model* model_ = nullptr;
 	//3Dオブジェクト生成
 	Object3d* object3d_ = nullptr;
 	//audio生成
-	Audio* audio = nullptr;
+	Audio* audio_ = nullptr;
 };
 
