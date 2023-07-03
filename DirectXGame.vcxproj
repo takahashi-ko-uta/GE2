@@ -156,6 +156,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />
