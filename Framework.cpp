@@ -44,7 +44,6 @@ void Framework::Update()
 
 void Framework::Finalize()
 {
-	
 	//“ü—Í‰ð•ú
 	delete input;
 	//DirectX‰ð•ú

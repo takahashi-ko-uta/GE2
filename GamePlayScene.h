@@ -5,12 +5,13 @@
 #include "DirectXCommon.h"
 #include "SpriteCommon.h"
 #include "Sprite.h"
+#include "Input.h"
 
 class GamePlayScene
 {
 public://メンバ関数
 	//初期化
-	void Initialize(DirectXCommon* dxCommon);
+	void Initialize(DirectXCommon* dxCommon, Input* input);
 	//終了
 	void Finalize();
 	//毎フレーム処理
@@ -20,6 +21,7 @@ public://メンバ関数
 
 private:
 	DirectXCommon* dxCommon_ = nullptr;
+	Input* input_ = nullptr;
 	//スプライト共通部の生成
 	SpriteCommon* spriteCommon_ = nullptr;
 	//スプライト生成

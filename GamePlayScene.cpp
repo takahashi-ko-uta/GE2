@@ -1,12 +1,11 @@
 #include "GamePlayScene.h"
 #include "DirectXCommon.h"
 
-void GamePlayScene::Initialize(DirectXCommon* dxCommon)
+void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 {
     this->dxCommon_ = dxCommon;
-    //this->spriteCommon_ = spriteCommon;
-
-
+    this->input_ = input;
+    
     //スプライト共通部の初期化
     spriteCommon_ = new SpriteCommon();
     spriteCommon_->Initialize(dxCommon);
@@ -41,6 +40,9 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon)
 
 void GamePlayScene::Finalize()
 {
+    //入力解放
+    delete input_;
+
     //スプライト共通部解放
     delete spriteCommon_;
     //スプライト解放
@@ -56,6 +58,18 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
+    //inputの更新処理
+    //input_->Update();
+    if(input_->PushKey(DIK_P))
+    {
+        object3d_->SetPosition({ +5,0,-5 });
+    }
+    else
+    {
+        object3d_->SetPosition({ -5,0,-5 });
+    }
+
+    input_->Update();
     sprite_->Update();
     object3d_->Update();
 }

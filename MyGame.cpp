@@ -34,7 +34,7 @@ void MyGame::Initialize()
 
     //ƒV[ƒ“‚Ì‰Šú‚©‰»
     scene = new GamePlayScene();
-    scene->Initialize(dxCommon);
+    scene->Initialize(dxCommon,input);
 
     ////ƒ‚ƒfƒ‹“Ç‚İ‚İ
     //model_ = Model::LoadFromOBJ("triangle_mat");
