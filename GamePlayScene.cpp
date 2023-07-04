@@ -3,6 +3,7 @@
 #include "WinApp.h"
 #include "ImGuiManager.h"
 #include "imgui/imgui.h"
+#include "Collision.h"
 
 void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 {
@@ -12,7 +13,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
     //カメラ初期化
     camera_ = new Camera();
     camera_->Initialize();
-
+    camera_->SetEye({ 0, 0, -100 });
     //オブジェクト全体の初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height, camera_);
 
@@ -29,15 +30,29 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
     //モデル読み込み
     model_ = Model::LoadFromOBJ("triangle_mat");
+    modelCube_ = Model::LoadFromOBJ("cube");
+    modelPlane_ = Model::LoadFromOBJ("plane");
+    modelSphere = Model::LoadFromOBJ("sphere");
 
     //オブジェクト生成
-    object3d_ = Object3d::Create();
+    objSphere_ = Object3d::Create();
+    objPlane_ = Object3d::Create();
     //3Dオブジェクトと3Dモデルをひも付け
-    object3d_->SetModel(model_);
+    objSphere_->SetModel(modelSphere);
+    objPlane_->SetModel(modelPlane_);
     //3Dオブジェクトの位置を指定
-    object3d_->SetPosition({ -5,0,-5 });
+    objSphere_->SetPosition({ 0,0,0 });
+    objPlane_->SetPosition({ 0,0,0 });
     //3Dオブジェクトのスケールを指定
-    object3d_->SetScale({ 10.0f,10.0f,10.0f });
+    objSphere_->SetScale({ 5.0f,5.0f ,5.0f });
+    objPlane_->SetScale({ 10.0f,10.0f,10.0f });
+
+    //当たり判定
+    sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
+    sphere.radius = 5.0f;
+    
+    plane.normal = XMVectorSet(0, 1, 0, 0);
+    plane.distance = objPlane_->GetPosition().y;
 
     //サウンド初期化
     Audio* audio = new Audio();
@@ -60,7 +75,8 @@ void GamePlayScene::Finalize()
     //スプライト解放
     delete sprite_;
     //オブジェクト解放
-    delete object3d_;
+    delete objSphere_;
+    delete objPlane_;
     //モデル解放
     delete model_;
     //オーディオ解放
@@ -70,36 +86,62 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-    camera_->SetEye({ 0,0,-100 });
+    //移動量
+    float moveY = 0.3f;
     
-    if(input_->PushKey(DIK_P))
-    {
-        object3d_->SetPosition({ +5,0,-5 });
+    //球の移動
+    XMFLOAT3 spherePos = objSphere_->GetPosition();
+    if (input_->PushKey(DIK_Q)) { spherePos.y += moveY; }
+    else if (input_->PushKey(DIK_A)) { spherePos.y -= moveY; }
+    objSphere_->SetPosition(spherePos);
+
+    //平面の移動
+    XMFLOAT3 planePos = objPlane_->GetPosition();
+    if (input_->PushKey(DIK_W)) { planePos.y += moveY; }
+    else if (input_->PushKey(DIK_S)) { planePos.y -= moveY; }
+    objPlane_->SetPosition(planePos);
+
+    //カメラの移動
+    XMFLOAT3 cameraEye = camera_->GetEye();
+    if (input_->PushKey(DIK_O)) { cameraEye.y += moveY; }
+    else if (input_->PushKey(DIK_L)) { cameraEye.y -= moveY; }
+    camera_->SetEye(cameraEye);
+
+    //当たり判定の更新
+    sphere.center = XMVectorSet(objSphere_->GetPosition().x, objSphere_->GetPosition().y, objSphere_->GetPosition().z, 1);
+    plane.distance = objPlane_->GetPosition().y;
+
+    bool hit = Collision::CheckSphere2Plane(sphere, plane);
+    if (hit) {
+        ImGui::Text("hit:ture");
     }
-    else
-    {
-        object3d_->SetPosition({ -5,0,-5 });
+    else {
+        ImGui::Text("hit:false");
     }
 
-    ImGui::Text("cameraEye:%f,%f,%f", camera_->GetEye().x, camera_->GetEye().y, camera_->GetEye().z);
-    ImGui::Text("cameraTarget:%f,%f,%f", camera_->GetTarget().x, camera_->GetTarget().y, camera_->GetTarget().z);
-    ImGui::Text("cameraUp:%f,%f,%f", camera_->GetUp().x, camera_->GetUp().y, camera_->GetUp().z);
+    //ImGuiテキスト
+    ImGui::Text("spherePos[Q][A]:%f,%f,%f", spherePos.x, spherePos.y, spherePos.z);
+    ImGui::Text("planePos[W][S]:%f,%f,%f", planePos.x, planePos.y, planePos.z);
+    ImGui::Text("cameraPos[O][L]:%f,%f,%f", cameraEye.x, cameraEye.y, cameraEye.z);
 
+    //各々の更新処理
     camera_->Update();
     input_->Update();
     sprite_->Update();
-    object3d_->Update();
+    objSphere_->Update();
+    objPlane_->Update();
 }
 
 void GamePlayScene::Draw()
 {
     //スプライトの描画
     spriteCommon_->PreDraw();
-    sprite_->Draw();
+    //sprite_->Draw();
     spriteCommon_->PostDraw();
 
     //オブジェクトの描画
     Object3d::PreDraw(dxCommon_->GetCommandList());
-    object3d_->Draw();
+    objSphere_->Draw();
+    objPlane_->Draw();
     Object3d::PostDraw();
 }

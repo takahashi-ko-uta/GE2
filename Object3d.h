@@ -63,77 +63,19 @@ public: // 静的メンバ関数
 	/// <returns></returns>
 	static Object3d* Create();
 
-	/// <summary>
-	/// 視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	//static const XMFLOAT3& GetEye() { return eye; }
-
-	/// <summary>
-	/// 視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	//static void SetEye(XMFLOAT3 eye);
-
-	/// <summary>
-	/// 注視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	//static const XMFLOAT3& GetTarget() { return target; }
-
-	/// <summary>
-	/// 注視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	//static void SetTarget(XMFLOAT3 target);
-
-	/// <summary>
-	/// ベクトルによる移動
-	/// </summary>
-	/// <param name="move">移動量</param>
-	static void CameraMoveVector(XMFLOAT3 move);
-
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* device;
-
 	// コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
 	// ルートシグネチャ
 	static ComPtr<ID3D12RootSignature> rootsignature;
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
-
 	//カメラ
 	static Camera* camera_;
 
-	//// ビュー行列
-	//static XMMATRIX matView;
-	//// 射影行列
-	//static XMMATRIX matProjection;
-	//// 視点座標
-	//static XMFLOAT3 eye;
-	//// 注視点座標
-	//static XMFLOAT3 target;
-	//// 上方向ベクトル
-	//static XMFLOAT3 up;
-
-
-	// 頂点データ配列
-	//static VertexPosNormalUv vertices[vertexCount];
-
-
-	/*
-		vector 配列の強化版	動的メモリ確保 実行中にメモリ変わる
-		配列					静的メモリ確保 実行する前にメモリ決まってる
-		配列は宣言時に要素数きめる、そのあと要素数増やしたり減らしたりできない
-		vectorはあとから要素数を増やせる(メモリを削除する仕様で作ってない
-		配列からvectorに変えた理由 : 配列だと読み込める頂点数に限りがあるのと確保したメモリが無駄になるから
-	*/
-
 private:// 静的メンバ関数
-
-
 	/// <summary>
 	/// カメラ初期化
 	/// </summary>
@@ -169,22 +111,15 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	/// <summary>
-	/// 座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
+	//getter
 	const XMFLOAT3& GetPosition() const { return position; }
+	const XMFLOAT3& GetScale() const { return scale; }
+	const XMFLOAT3& GetRotation() const { return rotation; }
 
-	/// <summary>
-	/// 座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	void SetPosition(const XMFLOAT3& position) { this->position = position; }
-
+	//setter
 	void SetModel(Model* model) { this->model = model; }
-
+	void SetPosition(const XMFLOAT3& position) { this->position = position; }
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
-
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 
 private: // メンバ変数

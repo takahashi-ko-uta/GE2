@@ -24,11 +24,11 @@ public:
 	void UpdeteProjectionMatrix();
 public://アクセッサ
 	//getter
-	const XMMATRIX& GetMatView() { return matView; }
-	const XMMATRIX& GetMatProjection() { return matProjection; }
-	const XMFLOAT3& GetEye() { return eye; }
-	const XMFLOAT3& GetTarget() { return target; }
-	const XMFLOAT3& GetUp() { return up; }
+	const XMMATRIX& GetMatView() const { return matView; }
+	const XMMATRIX& GetMatProjection() const { return matProjection; }
+	const XMFLOAT3& GetEye() const { return eye; }
+	const XMFLOAT3& GetTarget() const { return target; }
+	const XMFLOAT3& GetUp() const { return up; }
 	//setter
 	void SetMatView(const XMMATRIX& matView) { this->matView = matView; }
 	void SetMatProjection(const XMMATRIX& matProjection) { this->matProjection = matProjection; }
@@ -41,19 +41,10 @@ protected:
 	XMMATRIX matView = {};
 	// 射影行列
 	XMMATRIX matProjection = {};
-
-	//XMMATRIX matViewProjection_ = {};
-	//// ビルボード行列
-	//XMMATRIX matBillboard_ = {};
-	//// Y軸回りビルボード行列
-	//XMMATRIX matBillboardY_ = {};
-
 	// 視点座標
 	XMFLOAT3 eye;
 	// 注視点座標
 	XMFLOAT3 target;
 	// 上方向ベクトル
 	XMFLOAT3 up;
-
-
 };

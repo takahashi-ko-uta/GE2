@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Input.h"
 #include "Camera.h"
+#include "CollisionPrimitive.h"
 
 class GamePlayScene
 {
@@ -30,9 +31,18 @@ private:
 	Sprite* sprite_ = nullptr;
 	//モデル生成
 	Model* model_ = nullptr;
+	Model* modelCube_ = nullptr;
+	Model* modelSphere = nullptr;
+	Model* modelPlane_ = nullptr;
 	//3Dオブジェクト生成
-	Object3d* object3d_ = nullptr;
+	Object3d* objCube_ = nullptr;
+	Object3d* objSphere_ = nullptr;
+	Object3d* objPlane_ = nullptr;
+	//当たり判定
+	Sphere sphere;
+	Plane plane;
 	//audio生成
 	Audio* audio_ = nullptr;
+	XMFLOAT3 cameraEye = { 0,0,0 };
 };
 

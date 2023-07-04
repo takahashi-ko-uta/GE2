@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
@@ -205,6 +206,8 @@
   <ItemGroup>
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GamePlayScene.h" />
